@@ -1,11 +1,13 @@
-import {Component} from 'react'
-import {Switch, Route, Redirect, Link} from 'react-router-dom'
+import { Component } from 'react'
+import { Switch, Route, Redirect, Link } from 'react-router-dom'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Home from '../Home/Home'
-import {addToken, deleteUser} from '../../Redux/actionCreators'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+import { addToken, deleteUser } from '../../Redux/actionCreators'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import Recipes from '../Recipes/Recipes'
+
 
 const mapStateToProps = state => {
     return {
@@ -16,11 +18,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch) => ({
     addToken: () => { dispatch(addToken()) },
-    deleteUser: () => { dispatch(deleteUser())}
+    deleteUser: () => { dispatch(deleteUser()) }
 });
 
 class Main extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
     }
 
@@ -29,28 +31,34 @@ class Main extends Component {
         this.props.deleteUser()
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
                 {this.props.token.token !== undefined ?
-                        <div>
-                            <Link to='/home'>Home | </Link>
-                            <Link to='/login' onClick={this.handleLogout}>logout</Link> 
-                            <Redirect to='/home'/>
+                    <div>
+                        <Link to='/home'>Home | </Link>
+                        <Link to='/recipes'>Recipes |</Link>
+                        <Link to='/login' onClick={this.handleLogout}>logout</Link>
+                        <Redirect to='/home' />
 
-                        </div>  
-                    : 
+                    </div>
+                    :
+                    <div>
                         <Link to='/login'>Home | </Link>
+                        {/* recipes on main for non logged in users? */}
+                        <Link to='/recipes'>Recipes |</Link>
+                    </div>
                 }
                 <Switch>
-                    <Route path='/login' component={() => <Login/>}/>
-                    <Route path='/register'component={() => <Register/>}/>
-                    <Route path='/home' component={this.props.token.token !== undefined ? () => <Home/> : null}/>
-                    <Redirect to='/login'/>
+                    <Route path='/login' component={() => <Login />} />
+                    <Route path='/register' component={() => <Register />} />
+                    <Route path='/recipes' component={() => <Recipes />} />
+                    <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
+                    <Redirect to='/login' />
                 </Switch>
             </div>
         )
     }
-} 
+}
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

@@ -13,3 +13,8 @@ export const addUser = (user) => ({
 export const deleteUser = () => ({
     type: ActionTypes.DELETE_USER
 })
+
+export const selectRecipe = (recipe) => ({
+    type: ActionTypes.SELECT_RECIPE,
+    payload: recipe
+})
