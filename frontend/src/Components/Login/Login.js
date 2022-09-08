@@ -31,8 +31,15 @@ class Login extends Component {
 
         const userWithToken = await axios.post(baseUrl + '/login', data)
 
+        console.log(userWithToken);
+        const str_token = JSON.stringify(userWithToken.data.token);
+
         
         await this.props.dispatch(addToken(userWithToken.data.token))
+        //console.log(this.props.dispatch(addToken(userWithToken.data.token)))
+        const token = this.props.dispatch(addToken(userWithToken.data.token));
+
+        //console.log("this is the token " + array);
         await this.props.dispatch(addUser(userWithToken.data.user));
     }
 
@@ -47,6 +54,7 @@ class Login extends Component {
         return(
             <div>
                 <h1>Please Sign In</h1>
+                
                 <label class="sr-only">Username</label>
                 <input
                     type="text"
