@@ -13,11 +13,21 @@ public class MealPlan {
     private Long ownerId;
     @NotEmpty(message="Please enter a title.")
     private String title;
-
-
+    private MealPlanDay[] mealPlanDays;
+    
+    //public MealPlan(Long planId, Long ownerId, String title, MealPlanDay[] mealPlanDays)
+    {
+        this.planId = planId;
+        this.ownerId = ownerId;
+        this.title = title;
+        this.mealPlanDays = mealPlanDays;
+    }
+    
     public void setPlanId(Long planId) {
         this.planId = planId;
     }
+    
+    public Long getPlanId() { return planId; }
 
     public Long getOwnerId() {
         return ownerId;
@@ -34,8 +44,17 @@ public class MealPlan {
     public void setTitle(String title) {
         this.title = title;
     }
-
-
+    
+    public MealPlanDay[] getMealPlanDays()
+    {
+        return mealPlanDays;
+    }
+    
+    public void setMealPlanDays(MealPlanDay[] mealPlanDays)
+    {
+        this.mealPlanDays = mealPlanDays;
+    }
+    
     @Override
     public String toString() {
         return "MealPlan{" +
