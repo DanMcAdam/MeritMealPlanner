@@ -29,31 +29,19 @@ export default function RecipeForm({ addRecipe }) {
         resetForm()
     }
 
-    // // instead we will use inline functions to update individual state
+    // instead we will use inline functions to update individual state
     //     const handleChange = (e) => {
     //         console.log(e.target.value)
     //         setTitle(e.target.value)
     //     }
 
     return (
-        // <form className="new-recipe-form">
-        //     {/* <label htmlFor="title">Event Title:</label>
-        // <input type="text" id="title" /> */}
-        //     <label>
-        //         <span>Event Title:</span>
-        //         <input type="text" />
-        //     </label>
-        //     <label>
-        //         <span>Event Date:</span>
-        //         <input type="date" />
-        //     </label>
-        //     <button>Submit</button>
-        // </form>
 
         <form className="recipes-form" onSubmit={handleSubmit}>
             <h2 className="recipes-form_heading">New Recipe</h2>
             <div className="recipes-form_section">
                 <label>
+                <span>Recipe Title</span>
                     <input
                         type="text"
                         name='title'
@@ -63,6 +51,7 @@ export default function RecipeForm({ addRecipe }) {
                     />
                 </label>
                 <label>
+                <span>Ingredients</span>
                     <input
                         type="text"
                         name='ingredients'
@@ -72,6 +61,7 @@ export default function RecipeForm({ addRecipe }) {
                     />
                 </label>
                 <label>
+                <span>Instructions</span>
                     <input
                         type="text"
                         name='instructions'
@@ -85,27 +75,6 @@ export default function RecipeForm({ addRecipe }) {
             {/* button will inherit onSubmit from form */}
             <button>Add Recipe</button>
         </form>
-
     )
 }
 
-
-
-{/* <form className="recipes-form">
-    <h2 className="recipes-form_heading">New Recipe</h2>
-    <div className="recipes-form_section">
-        <input
-            name='name'
-            placeholder='Name'
-        />
-        <input
-            name='ingredients'
-            placeholder='Ingredients'
-        />
-        <input
-            name='instructions'
-            placeholder='Instructions'
-        />
-
-    </div>
-</form> */}

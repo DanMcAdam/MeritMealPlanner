@@ -7,6 +7,9 @@ import { addToken, deleteUser } from '../../Redux/actionCreators'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Recipes from '../Recipes/Recipes'
+import Create from '../Create/Create'
+import Search from '../Search/Search'
+import Recipe from '../Recipe/Recipe'
 
 
 const mapStateToProps = state => {
@@ -46,15 +49,24 @@ class Main extends Component {
                     <div>
                         <Link to='/login'>Home | </Link>
                         {/* recipes on main for non logged in users? */}
-                        <Link to='/recipes'>Recipes |</Link>
+                        <Link to='/dashboard'>Recipes |</Link>
                     </div>
                 }
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
                     <Route path='/register' component={() => <Register />} />
-                    <Route path='/recipes' component={() => <Recipes />} />
+                    <Route path='/dashboard' component={() => <Recipes />} />
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
-                    <Redirect to='/login' />
+
+                    <Route path='/create' component={() => <Create />} />
+                    <Route path="/search" component={() => <Search />} />
+
+                    <Route path='/recipes/:id' component={() => <Recipe />} />
+
+                    {/* <Route path="/search"><Search /></Route>
+                    <Route path="/create"><Create /></Route>
+                    <Route path='/recipes/:id'><Recipe /></Route>
+                    <Redirect to='/login' /> */}
                 </Switch>
             </div>
         )
