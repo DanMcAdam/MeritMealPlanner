@@ -17,5 +17,5 @@ public interface MealPlanDao {
 
     int findPlanIdByTitle(String title);
 
-    boolean createPlan(Long planId, Long ownerId, String title);
+    boolean createPlan(Long ownerId, String title);
 }
