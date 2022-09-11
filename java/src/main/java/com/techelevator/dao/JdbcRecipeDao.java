@@ -4,8 +4,9 @@ import com.techelevator.model.Recipe;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import javax.sql.rowset.JdbcRowSet;
 import java.sql.Array;
-//TODO: recipe map -> ingredient query for relational table that holds recipe ingredients to fill array of ingredients for Recipe.ingredients
+
 public class JdbcRecipeDao implements RecipeDao
 {
     private JdbcTemplate jdbcTemplate;
@@ -18,7 +19,7 @@ public class JdbcRecipeDao implements RecipeDao
     {
         String sql = "SELECT * FROM recipe WHERE recipe_id = ?;";
     
-        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, recipeId);
+        JdbcRowSet rowSet = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, recipeId);
         
         try
         {
@@ -34,9 +35,8 @@ public class JdbcRecipeDao implements RecipeDao
         return null;
     }
     
-    
-    //TODO: Finish mapping once I figure out how to arrays from Postgre
-    Recipe mapRowToRecipe(SqlRowSet rs) throws Exception
+
+    Recipe mapRowToRecipe(JdbcRowSet rs) throws Exception
     {
         Recipe recipe = new Recipe();
         
@@ -50,8 +50,10 @@ public class JdbcRecipeDao implements RecipeDao
             recipe.setPrepTime(rs.getInt("prep_time"));
             recipe.setInstructions(rs.getString("instructions"));
             recipe.setPrivate(rs.getBoolean("private"));
-            //Array a = rs.getArray("picture_links");
-            //recipe.setPictureLinks(new String[]);
+            Array a = rs.getArray("picture_links");
+            recipe.setPictureLinks((String[])a.getArray());
+            recipe.setReferenceLink(rs.getString("reference_link"));
+            recipe.setVideoLink(rs.getString("video_link"));
         }
         catch (Exception e)
         {

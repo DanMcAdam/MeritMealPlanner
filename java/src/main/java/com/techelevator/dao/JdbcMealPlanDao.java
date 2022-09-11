@@ -41,7 +41,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
 
     @Override
     public int getOwnerId(Long ownerId) {
-        return jdbcTemplate.queryForObject("select owner_id from meal_plan where owner_id = ?", int.class, ownerId);
+        return jdbcTemplate.queryForObject("SELECT owner_id FROM meal_plan WHERE owner_id = ?", int.class, ownerId);
     }
 
     MealPlanDayRecipe[] findAllRecipesInMealPlanDay(Long dayId) throws Exception

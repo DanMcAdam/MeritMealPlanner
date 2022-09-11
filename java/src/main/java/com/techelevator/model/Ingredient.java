@@ -59,7 +59,7 @@ public class Ingredient
     }
 }
 
-enum IngredientTypes
+public enum IngredientTypes
 {
     grain,
     dairy,
