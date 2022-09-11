@@ -26,3 +26,16 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+/* table,
+th,
+td {
+  border: 1px solid black;
+} */
+table {
+  border-collapse: collapse;
+}
+
+tr {
+  border-bottom: 1pt solid black;
+}

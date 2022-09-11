@@ -9,7 +9,7 @@ import { withRouter } from 'react-router-dom'
 import Recipes from '../Recipes/Recipes'
 import Create from '../Create/Create'
 import Search from '../Search/Search'
-import Recipe from '../Recipe/Recipe'
+import RecipeDetails from '../RecipeDetails/RecipeDetails'
 
 
 const mapStateToProps = state => {
@@ -49,23 +49,27 @@ class Main extends Component {
                     <div>
                         <Link to='/login'>Home | </Link>
                         {/* recipes on main for non logged in users? */}
-                        <Link to='/dashboard'>Recipes |</Link>
+                        <Link to='/recipes'>Recipes |</Link>
                     </div>
                 }
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
                     <Route path='/register' component={() => <Register />} />
-                    <Route path='/dashboard' component={() => <Recipes />} />
+                    {/* <Route path='/recipes/:id' component={() => <RecipeDetails />} /> */}
+                    {/* <Route path='/recipes/:id' component={RecipeDetails} /> */}
+                    <Route exact path="/recipes/:id" render={(props) => (
+                        <RecipeDetails id={props.match.params.id} />
+                    )} />
+                    <Route path='/recipes' component={() => <Recipes />} />
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
 
                     <Route path='/create' component={() => <Create />} />
                     <Route path="/search" component={() => <Search />} />
 
-                    <Route path='/recipes/:id' component={() => <Recipe />} />
 
                     {/* <Route path="/search"><Search /></Route>
                     <Route path="/create"><Create /></Route>
-                    <Route path='/recipes/:id'><Recipe /></Route>
+                    <Route path='/recipes/:id'><RecipeDetails /></Route>
                     <Redirect to='/login' /> */}
                 </Switch>
             </div>
