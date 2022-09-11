@@ -86,8 +86,14 @@ public class JdbcUserDao implements UserDao {
                 }
                 , keyHolder) == 1;
         int newUserId = (int) keyHolder.getKeys().get(id_column);
-
-
+    
+    
+        createDummyData(newUserId);
+        return userCreated;
+    }
+    
+    private void createDummyData(int newUserId)
+    {
         //create meal_plan when the user creates a account
         String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?,?)";
         try{
@@ -97,8 +103,8 @@ public class JdbcUserDao implements UserDao {
         }catch(Exception e){
             e.getCause();
         }
-
-
+        
+        
         //Fills grocery_list with default values.
         String insertGroceryList = "INSERT INTO grocery_list (owner_id) VALUES(?)";
         try{
@@ -106,7 +112,7 @@ public class JdbcUserDao implements UserDao {
         }catch(Exception e){
             e.getCause();
         }
-
+        
         //Fills recipe with default values.
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
@@ -116,10 +122,10 @@ public class JdbcUserDao implements UserDao {
         }catch(Exception e){
             e.getCause();
         }
-
-
+        
+        
         //we would also need reviews table
-
+        
         //user_favorites
         String insertUserFavorites = "INSERT INTO user_favorites (users_user_id,recipe_recipe_id) VALUES(?)";
         try{
@@ -137,9 +143,8 @@ public class JdbcUserDao implements UserDao {
         }
 
 */
-        return userCreated;
     }
-
+    
     private User mapRowToUser(SqlRowSet rs) {
         User user = new User();
         user.setId(rs.getLong("user_id"));
