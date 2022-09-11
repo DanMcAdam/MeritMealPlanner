@@ -2,8 +2,10 @@ package com.techelevator.dao;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -26,6 +28,8 @@ public class JdbcUserDao implements UserDao {
     public int findIdByUsername(String username) {
         return jdbcTemplate.queryForObject("select user_id from users where username = ?", int.class, username);
     }
+
+
 
 	@Override
 	public User getUserById(Long userId) {
@@ -83,6 +87,56 @@ public class JdbcUserDao implements UserDao {
                 , keyHolder) == 1;
         int newUserId = (int) keyHolder.getKeys().get(id_column);
 
+
+        //create meal_plan when the user creates a account
+        String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?,?)";
+        try{
+            jdbcTemplate.update(insertMealPlan, newUserId, "Insert new meal plan");
+
+
+        }catch(Exception e){
+            e.getCause();
+        }
+
+
+        //Fills grocery_list with default values.
+        String insertGroceryList = "INSERT INTO grocery_list (owner_id) VALUES(?)";
+        try{
+            jdbcTemplate.update(insertGroceryList, newUserId);
+        }catch(Exception e){
+            e.getCause();
+        }
+
+        //Fills recipe with default values.
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);
+        String insertRecipe = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, reference_link, video_link) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try{
+            jdbcTemplate.update(insertRecipe, newUserId, "add new title",date,1,1,"Insert new instructions", true, "Insert reference link", "Insert new video link");
+        }catch(Exception e){
+            e.getCause();
+        }
+
+
+        //we would also need reviews table
+
+        //user_favorites
+        String insertUserFavorites = "INSERT INTO user_favorites (users_user_id,recipe_recipe_id) VALUES(?)";
+        try{
+            jdbcTemplate.update(insertUserFavorites, newUserId,1 );
+        }catch(Exception e){
+            e.getCause();
+        }
+/*
+        //Not working
+         String insertUserPantry = "INSERT INTO user_pantry (users_user_id) VALUES(?)";
+        try{
+            jdbcTemplate.update(insertUserPantry,newUserId);
+        }catch(Exception e){
+            e.getCause();
+        }
+
+*/
         return userCreated;
     }
 

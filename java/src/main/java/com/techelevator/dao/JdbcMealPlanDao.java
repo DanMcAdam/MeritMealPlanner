@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.techelevator.model.MealPlanDay;
 import com.techelevator.model.MealPlanDayRecipe;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -154,7 +155,53 @@ public class JdbcMealPlanDao implements MealPlanDao{
     }
 
     @Override
-    public boolean createPlan(Long planId, Long ownerId, String title) {
-        return false;
+    public boolean createPlan(Long ownerId, String title) {
+
+        String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?, ?)";
+        try{
+            jdbcTemplate.update(insertMealPlan, ownerId,title);
+        }catch(DataAccessException e){
+            return false;
+        }
+        return true;
     }
+
+    //The following has not been tested.
+    public boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle){
+
+        String updateMealPlan = "UPDATE meal_plan SET title = ? WHERE plan_id = ? AND owner_id = ?";
+        try{
+            jdbcTemplate.update(updateMealPlan, newTitle, planIdToBeChanged,ownerId);
+        }catch(DataAccessException e){
+            return false;
+        }
+        return true;
+
+    }
+
+    public boolean deletePlan(Long planId, Long ownerId){
+
+        String deleteMealPlan = "DELETE FROM meal_plan WHERE plan_id = ? AND owner_id = ? ";
+        try{
+            jdbcTemplate.update(deleteMealPlan, planId,ownerId);
+        }catch(DataAccessException e){
+            return false;
+        }
+        return true;
+
+    }
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
