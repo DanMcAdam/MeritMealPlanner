@@ -1,0 +1,72 @@
+.recipe-card-container {
+    padding: 50px;
+    margin: 40px auto;
+    /* margin-left: 50px; */
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+}
+
+/* .recipe-card-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 40px;
+    max-width: 1200px;
+    margin: 40px auto;
+} */
+
+.recipe-card-item {
+    border: 1px solid #eee;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    /* max-width: 400px; */
+    max-width: 700px;
+    margin: 20px auto;
+    border-radius: 4px;
+    /* idk */
+    position: relative;
+    /* this is for the transform below */
+    /* transition: all 0.3s ease; */
+}
+
+/* .recipe-card-item:hover {
+    transform: rotate(3deg);
+} */
+
+.recipe-card-item h3 {
+    color: #555;
+    margin-bottom: 6px;
+    font-size: 1.5em;
+}
+
+.recipe-card-item p {
+    color: #999;
+    font-size: 0.9em;
+}
+
+.recipe-instructions {
+    color: #555;
+    font-size: 0.7em;
+    margin: 20px 0;
+    line-height: 1.2em;
+}
+
+.recipe-card-item a {
+    color: #555;
+    text-decoration: none;
+    display: block;
+    background: #e2e2e2;
+    font-size: 0.9em;
+    text-align: center;
+    width: 120px;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 20px auto 0;
+}
+
+
+.recipe-card-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}

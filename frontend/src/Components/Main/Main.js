@@ -35,6 +35,10 @@ class Main extends Component {
     }
 
     render() {
+        const RecipeWithId = ({ match }) => {
+            return <RecipeDetails id={match.params.id} />
+        }
+
         return (
             <div>
                 {this.props.token.token !== undefined ?
@@ -57,9 +61,7 @@ class Main extends Component {
                     <Route path='/register' component={() => <Register />} />
                     {/* <Route path='/recipes/:id' component={() => <RecipeDetails />} /> */}
                     {/* <Route path='/recipes/:id' component={RecipeDetails} /> */}
-                    <Route exact path="/recipes/:id" render={(props) => (
-                        <RecipeDetails id={props.match.params.id} />
-                    )} />
+                    <Route exact path="/recipes/:id" component={RecipeWithId} />
                     <Route path='/recipes' component={() => <Recipes />} />
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
 
