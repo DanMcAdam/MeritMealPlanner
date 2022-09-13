@@ -1,11 +1,12 @@
 package com.techelevator.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+@Component
 public class User {
 
    private Long id;

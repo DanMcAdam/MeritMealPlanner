@@ -47,6 +47,7 @@ public class AuthenticationController {
 
         
         User user = userDao.findByUsername(loginDto.getUsername());
+        //new MealPlanController(user);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);

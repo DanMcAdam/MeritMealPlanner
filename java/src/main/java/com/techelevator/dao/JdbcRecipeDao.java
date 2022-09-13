@@ -4,11 +4,12 @@ import com.techelevator.model.Recipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.JdbcRowSet;
 import java.sql.Array;
 import java.sql.Date;
-
+@Service
 //TODO: recipe map -> ingredient query for relational table that holds recipe ingredients to fill array of ingredients for Recipe.ingredients
 public class JdbcRecipeDao implements RecipeDao
 {
@@ -67,31 +68,46 @@ public class JdbcRecipeDao implements RecipeDao
         return recipe;
     }
 
-    //Not yet tested but here are the insertion, update, deletion statements.
+    //creates and store data on the recipe table
     public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
                                 boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink) {
 
+        //making a query to the db in order to check title
+        String titleIsFound = "SELECT title FROM recipe WHERE title = ?";
+        String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, title);
 
-        long millis=System.currentTimeMillis();
-        java.sql.Date date=new java.sql.Date(millis);
-        String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, \" +\n" +
-                "                \"picture_links, reference_link, video_link) VALUES(?,?,?,?,?,?,?,?,?,?)";
-        try{
-            jdbcTemplate.update(insertMealPlan, creatorId, title, date, cookingTime, prepTime,
-                    instructions, isPrivate, pictureLinks, referenceLink, videoLink);
-        }catch(DataAccessException e){
+        //checks if title is already in the db
+        if(title.equals(databaseValue)){
             return false;
         }
-        return true;
+        else {
+
+
+            //gets the current date
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            //query for items to be inserted in the recipe db
+            String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, video_link) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            try {
+                jdbcTemplate.update(insertMealPlan, creatorId, title, date, cookingTime, prepTime,
+                        instructions, isPrivate, pictureLinks, referenceLink, videoLink);
+            } catch (DataAccessException e) {
+                return false;
+            }
+            return true;
+        }
     }
 
-    //The following has not been tested.
+
+    //updates value on recipe table
     public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
                                 boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink){
 
+        //gets current date
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
 
+        //query to update db values on recipe table
         String updateRecipeSql = "UPDATE recipe SET title = ?, date_added = ?, cooking_time = ?, prep_time = ?, instructions =?, private = ?, " +
                 "picture_links = ?, reference_link = ?, video_link = ? WHERE recipe_id = ? AND creator_id = ?";
         try{
@@ -103,31 +119,18 @@ public class JdbcRecipeDao implements RecipeDao
         return true;
 
     }
-    //not yet tested.
 
-    public boolean deleteRecipe(Long recipeId, Long creatorId){
+    //deletes values on recipe table
+    public boolean deleteRecipe(String title, Long creatorId){
 
-        String deleteRecipeSql = "DELETE FROM recipe WHERE recipe_id = ? AND creator_id = ? ";
+        //query for deleting item
+        String deleteRecipeSql = "DELETE FROM recipe WHERE title = ? AND creator_id = ? ";
         try{
-            jdbcTemplate.update(deleteRecipeSql, recipeId,creatorId);
+            jdbcTemplate.update(deleteRecipeSql, title,creatorId);
         }catch(DataAccessException e){
             return false;
         }
         return true;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
