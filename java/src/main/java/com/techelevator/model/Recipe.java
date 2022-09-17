@@ -9,7 +9,6 @@ public class Recipe
 
     private long recipeId;
     private long creatorId;
-
     private String title;
     private Date dateAdded;
     private int cookingTime;

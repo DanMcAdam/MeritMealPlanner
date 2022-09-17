@@ -7,8 +7,12 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 
 import javax.sql.rowset.JdbcRowSet;
+import java.security.Principal;
 import java.sql.Array;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 //TODO: recipe map -> ingredient query for relational table that holds recipe ingredients to fill array of ingredients for Recipe.ingredients
 public class JdbcRecipeDao implements RecipeDao
@@ -18,7 +22,43 @@ public class JdbcRecipeDao implements RecipeDao
     public JdbcRecipeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
+
+
+
+    public List<Recipe> getRecipeListFromUser(int creatorId) throws Exception{
+
+        List<Recipe> recipes = new ArrayList<>();
+
+        String sql = "SELECT * FROM recipe WHERE creator_id = ?";
+
+        JdbcRowSet recipeList = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, creatorId);
+        mapRowToRecipe(recipeList);
+
+        return recipes;
+    }
+
+
+    public List<Recipe> getAllRecipeList() throws Exception{
+
+        List<Recipe> recipes = new ArrayList<>();
+
+        String sql = "SELECT * FROM recipe";
+
+        JdbcRowSet recipeList = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql);
+        mapRowToRecipe(recipeList);
+
+        return recipes;
+    }
+
+
+
+
+
+
+
+
+
     public Recipe getRecipeById(Long recipeId) throws Exception
     {
         String sql = "SELECT * FROM recipe WHERE recipe_id = ?;";
@@ -38,7 +78,30 @@ public class JdbcRecipeDao implements RecipeDao
         }
         return null;
     }
-    
+
+    public Recipe getRecipeByName(String namesOfRecipe) throws Exception {
+
+        String sql = "SELECT * FROM recipe WHERE title ILIKE ? ";
+
+        JdbcRowSet rowSet = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, namesOfRecipe);
+
+        try
+        {
+            if(rowSet.next())
+            {
+                return mapRowToRecipe(rowSet);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new Exception("Error querying for recipe by name");
+        }
+        return null;
+
+
+    }
+
+
 
     
     Recipe mapRowToRecipe(JdbcRowSet rs) throws Exception
@@ -73,8 +136,8 @@ public class JdbcRecipeDao implements RecipeDao
                                 boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink) {
 
         //making a query to the db in order to check title
-        String titleIsFound = "SELECT title FROM recipe WHERE title = ?";
-        String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, title);
+        String titleIsFound = "SELECT title FROM recipe WHERE title = ? AND creator_id = ? ";
+        String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, title, creatorId);
 
         //checks if title is already in the db
         if(title.equals(databaseValue)){
@@ -91,6 +154,36 @@ public class JdbcRecipeDao implements RecipeDao
             try {
                 jdbcTemplate.update(insertMealPlan, creatorId, title, date, cookingTime, prepTime,
                         instructions, isPrivate, pictureLinks, referenceLink, videoLink);
+            } catch (DataAccessException e) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+
+
+    public boolean createRecipe(Recipe recipe) {
+
+        //making a query to the db in order to check title
+        String titleIsFound = "SELECT title FROM recipe WHERE title = ? AND creator_id = ? ";
+        String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, recipe.getTitle(), recipe.getCreatorId());
+
+        //checks if title is already in the db
+        if(recipe.getTitle().equals(databaseValue)){
+            return false;
+        }
+        else {
+
+
+            //gets the current date
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            //query for items to be inserted in the recipe db
+            String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, video_link) VALUES(?,?,?,?,?,?,?,?,?,?)";
+            try {
+                jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                        recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getVideoLink());
             } catch (DataAccessException e) {
                 return false;
             }
@@ -119,6 +212,29 @@ public class JdbcRecipeDao implements RecipeDao
         return true;
 
     }
+
+    public boolean updateRecipe(Recipe recipe){
+
+        //gets current date
+        long millis=System.currentTimeMillis();
+        java.sql.Date date=new java.sql.Date(millis);
+
+        //query to update db values on recipe table
+        String updateRecipeSql = "UPDATE recipe SET title = ?, date_added = ?, cooking_time = ?, prep_time = ?, instructions =?, private = ?, " +
+                "picture_links = ?, reference_link = ?, video_link = ? WHERE recipe_id = ? AND creator_id = ?";
+        try{
+            jdbcTemplate.update(updateRecipeSql, recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                    recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getVideoLink(), recipe.getRecipeId(), recipe.getCreatorId());
+        }catch(DataAccessException e){
+            return false;
+        }
+        return true;
+
+    }
+
+
+
+
 
     //deletes values on recipe table
     public boolean deleteRecipe(String title, Long creatorId){

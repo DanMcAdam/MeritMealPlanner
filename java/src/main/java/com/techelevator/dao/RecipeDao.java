@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.sql.rowset.JdbcRowSet;
 import java.sql.Array;
+import java.util.List;
 
 
 public interface RecipeDao
@@ -15,13 +16,20 @@ public interface RecipeDao
 
 
 
+        public List<Recipe> getRecipeListFromUser(int creatorId) throws Exception;
+        public List<Recipe> getAllRecipeList() throws Exception;
         public Recipe getRecipeById(Long recipeId) throws Exception;
 
-        //Not yet tested but here are the insertion, update, deletion statements.
+        public Recipe getRecipeByName(String namesOfRecipe) throws Exception;
+
+        public boolean createRecipe(Recipe recipe);
+        public boolean updateRecipe(Recipe recipe);
+
+
         public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
                                     boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink);
 
-        //The following has not been tested.
+
         public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
                                     boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink);
 
