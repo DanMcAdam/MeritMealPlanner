@@ -142,33 +142,33 @@ public class JdbcRecipeDao implements RecipeDao
 
     //creates and store data on the recipe table
     //TODO: take ingredient do a recipe join submit
-    public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime, Ingredient ingredient[], String instructions,
-                                boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader) {
+    public boolean createRecipe(Recipe recipe) {
 
         //making a query to the db in order to check title
-        String titleIsFound = "SELECT title FROM recipe WHERE title = ? AND creator_id = ? ";
-        String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, title, creatorId);
+        //String titleIsFound = "SELECT title FROM recipe WHERE title = ? AND creator_id = ? ";
+        //String databaseValue = jdbcTemplate.queryForObject(titleIsFound,String.class, recipe.getTitle(), recipe.getRecipeId());
 
         //checks if title is already in the db
-        if(title.equals(databaseValue)){
-            return false;
-        }
-        else {
-
-
+        //if(recipe.getTitle().equals(databaseValue)){
+        //  return false;
+       //}
+        /*else {*/
+    
+            System.out.println(recipe);
             //gets the current date
             long millis = System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
+            recipe.setDateAdded(date);
             //query for items to be inserted in the recipe db
             String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, subheader) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             try {
-                jdbcTemplate.update(insertMealPlan, creatorId, title, date, cookingTime, prepTime,
-                        instructions, isPrivate, pictureLinks, referenceLink, subHeader);
+                jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                        recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getSubHeader());
             } catch (DataAccessException e) {
                 return false;
             }
             return true;
-        }
+       /* }*/
     }
 
 

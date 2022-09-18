@@ -4,6 +4,9 @@ import { useFetch } from "../../hooks/useFetch"
 import { Link } from "react-router-dom"
 import './RecipeForm.css'
 
+
+//TODO current implementation creates dot before first ingredient, not sure why
+
 export default function RecipeForm() {
 
     //optional - send default values
@@ -11,8 +14,12 @@ export default function RecipeForm() {
 
     const [title, setTitle] = useState('')
     const [instructions, setInstructions] = useState('')
-    const [ingredients, setIngredients] = useState([])
-    const [newIngredient, setNewIngredient] = useState('')
+    const [ingredients, setIngredients] = useState([{
+            ingredientId: 1, ingredientName: '', superCategory : null,  ingredientTypes: 'Other', amount: null, measurement : 'empty', recipeNote: '',
+        }])
+    const [newIngredient, setNewIngredient] = useState(
+        ''
+    )
     const [prepTime, setPrepTime] = useState({
         prepHrs: '',
         prepMins: ''
@@ -21,9 +28,12 @@ export default function RecipeForm() {
         cookHrs: '',
         cookMins: ''
     })
+    const [isPrivate, setPrivate] = useState(true)
+    const [pictureLinks, setPictureLinks] = useState(['null'])
+    const [referenceLink, setReferenceLink] = useState('null')
+    const [subHeader, setSubHeader] = useState('null')
 
-
-    const { postData, data, error } = useFetch("http://localhost:3000/recipes", "POST")
+    const { postData, data, error } = useFetch("http://localhost:8081/FormCreate", "POST")
 
     const resetForm = () => {
         setTitle('')
@@ -43,14 +53,22 @@ export default function RecipeForm() {
     //NOTE: saving to json server will auto generate unique id
     const handleSubmit = (e) => {
         e.preventDefault()
-        postData({ title, ingredients, instructions, cookTime, prepTime })
+        //translates cooktime and preptime to match single int representing minutes in database
+        const translatedCookTime = (cookTime.cookHrs * 60) + cookTime.cookMins;
+        const translatedPrepTime = (prepTime.prepHrs * 60) + prepTime.prepMins;
+        //sets up ingredient as ingredient object to match API model
+        for (let i = 0; i < ingredients.length; i++)
+        {
+            ingredients[i] = {ingredientId: 1, ingredientName: 'ingredient', superCategory : 0,  ingredientTypes: 'Other', amount: 0, measurement : 'empty', recipeNote: ingredients[i].recipeNote}
+        }
+        postData({recipeId: 1, creatorId: 1, title, date : '01-01-1999', translatedPrepTime, ingredients, instructions, isPrivate, pictureLinks, referenceLink, subHeader})
         resetForm()
     }
 
     const ingredientList = ingredients.map((ingredient) => {
         return (
             <ul>
-                <li key={ingredient.id}>{ingredient.note}</li>
+                <li key={ingredient.id}>{ingredient.recipeNote}</li>
             </ul>
         )
     })
@@ -77,7 +95,12 @@ export default function RecipeForm() {
         e.preventDefault()
         const newIng = {
             id: Math.floor(Math.random() * 10000),
-            note: newIngredient
+            ingredientName: null, 
+            superCategory : null,  
+            ingredientTypes: null, 
+            amount: null, 
+            measurement : null, 
+            recipeNote: newIngredient
         }
         if (newIngredient && !ingredients.includes(newIngredient)) {
             setIngredients(prevIngredients => [...prevIngredients, newIng])

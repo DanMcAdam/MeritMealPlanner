@@ -10,6 +10,21 @@ public class Ingredient
     private Measurement measurement;
     private String recipeNote;
     
+    public Ingredient()
+    {
+    }
+    
+    public Ingredient(long ingredientId, String ingredientName, long superCategory, IngredientTypes ingredientTypes, int amount, Measurement measurement, String recipeNote)
+    {
+        this.ingredientId = ingredientId;
+        this.ingredientName = ingredientName;
+        this.superCategory = superCategory;
+        this.ingredientTypes = ingredientTypes;
+        this.amount = amount;
+        this.measurement = measurement;
+        this.recipeNote = recipeNote;
+    }
+    
     public int getAmount()
     {
         return amount;

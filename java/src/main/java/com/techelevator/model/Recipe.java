@@ -3,6 +3,7 @@ package com.techelevator.model;
 import org.springframework.data.relational.core.mapping.Column;
 
 import java.sql.Date;
+import java.util.Arrays;
 
 public class Recipe
 {
@@ -13,6 +14,46 @@ public class Recipe
     private Date dateAdded;
     private int cookingTime;
     private int prepTime;
+    
+    public Recipe()
+    {
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Recipe{" +
+                "recipeId=" + recipeId +
+                ", creatorId=" + creatorId +
+                ", title='" + title + '\'' +
+                ", dateAdded=" + dateAdded +
+                ", cookingTime=" + cookingTime +
+                ", prepTime=" + prepTime +
+                ", instructions='" + instructions + '\'' +
+                ", isPrivate=" + isPrivate +
+                ", pictureLinks=" + Arrays.toString(pictureLinks) +
+                ", referenceLink='" + referenceLink + '\'' +
+                ", subHeader='" + subHeader + '\'' +
+                ", ingredients=" + Arrays.toString(ingredients) +
+                '}';
+    }
+    
+    public Recipe(long recipeId, long creatorId, String title, Date dateAdded, int cookingTime, int prepTime, String instructions, boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader, Ingredient[] ingredients)
+    {
+        this.recipeId = recipeId;
+        this.creatorId = creatorId;
+        this.title = title;
+        this.dateAdded = dateAdded;
+        this.cookingTime = cookingTime;
+        this.prepTime = prepTime;
+        this.instructions = instructions;
+        this.isPrivate = isPrivate;
+        this.pictureLinks = pictureLinks;
+        this.referenceLink = referenceLink;
+        this.subHeader = subHeader;
+        this.ingredients = ingredients;
+    }
+    
     private String instructions;
     private boolean isPrivate;
     private String[] pictureLinks;
