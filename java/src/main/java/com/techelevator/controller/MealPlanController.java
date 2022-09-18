@@ -1,44 +1,150 @@
 package com.techelevator.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.techelevator.dao.*;
+
+import com.techelevator.dao.MealPlanDao;
+import com.techelevator.dao.RecipeDao;
+import com.techelevator.dao.UserDao;
 import com.techelevator.model.*;
-import com.techelevator.security.jwt.JWTFilter;
-import com.techelevator.security.jwt.TokenProvider;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @CrossOrigin
+@Component
 
 public class MealPlanController {
-    @Autowired
-    private MealPlanDao mealPlanDao;
-    private RecipeDao recipeDao;
-    private IngredientDao ingredientDao;
-    
-    public MealPlanController (MealPlanDao mealPlan, RecipeDao recipe, IngredientDao ingredient)
-    {
-        this.mealPlanDao = mealPlan;
-        this.recipeDao = recipe;
-        this.ingredientDao = ingredient;
+
+
+    RecipeDao recipeDao;
+    MealPlanDao mealPlanDao;
+    UserDao userDao;
+
+
+    public MealPlanController(UserDao userDao, MealPlanDao mealPlanDao, RecipeDao recipeDao) {
+        this.userDao = userDao;
+        this.mealPlanDao = mealPlanDao;
+        this.recipeDao = recipeDao;
     }
-    
-    @RequestMapping(path = "/{userId}/mealPlans", method = RequestMethod.GET)
-    public MealPlan[] allMealPlans (@PathVariable Long userId)
-    {
-    
+
+    @RequestMapping(value = "/meal", method = RequestMethod.GET)
+    Long printMeal(Principal principal) {
+        String username = principal.getName();
+        User real_username = userDao.findByUsername(username);
+        return real_username.getId();
+
+
+
     }
+
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+        boolean print() {
+        Long recipeId = Long.valueOf(1);
+        Long creatorId = Long.valueOf(1);
+        String title = "Lasgna";
+        Long cookingTime = Long.valueOf(10);
+        Long prepTime = Long.valueOf(11);
+        String instructions = "various steps to follow";
+        boolean isPrivate = true;
+        String pictureLinks[] = {"link 1", "link 2"};
+        String referenceLink = "reference link";
+        String videoLink = "video Link";
+
+            /*
+             try {
+           return recipeDao.updateRecipe(recipeId,creatorId,title,cookingTime,prepTime,instructions,
+                   isPrivate,pictureLinks,referenceLink,videoLink);
+                   }
+
+             */
+
+        return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime, instructions,
+                isPrivate, pictureLinks, referenceLink, videoLink);
+
+/*
+        Long userToDelete = Long.valueOf(1);
+        Long recipeIdToDelete = Long.valueOf(9);
+
+
+        return recipeDao.deleteRecipe(recipeIdToDelete,userToDelete);
+
+ */
+    }
+
+
+        @RequestMapping(value = "/meal", method = RequestMethod.GET)
+        boolean printMeal (@RequestBody Recipe recipe, Principal principal){
+
+        return recipeDao.createRecipe(recipe);
+
+
+        }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public void userRecipes(@RequestBody Recipe recipe, int value) {
+        try {
+
+            switch (value){
+
+                case 1: {
+                    userChooseToDisplayRecipe(recipe.getRecipeId());
+
+                }
+                case 2:{
+                    userChooseToUpdateRecipe(recipe);
+                }
+                case 3:{
+                    userChooseToDeleteRecipe(recipe.getTitle(), recipe.getCreatorId());
+                }
+                default:{
+                    System.out.println("Recipe not found");
+
+                }
+            }
+
+        } catch (Exception e) {throw new RuntimeException(e);}
+
+    }
+
+
+    //Get method the Recipe the user has on the DB.
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public List<Recipe> getListOfRecipes(Principal principal) throws Exception{
+        int userId = userDao.findIdByUsername(principal.getName());
+        return recipeDao.getRecipeListFromUser(userId);
+
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/Form", method = RequestMethod.GET)
+    public void userChooseToUpdateRecipe(@RequestBody Recipe recipe) {
+        recipeDao.updateRecipe(recipe);
+
+    }
+
+
+    @RequestMapping(value = "/Form", method = RequestMethod.GET)
+    public boolean userChooseToDeleteRecipe(@RequestBody String title, Long creatorId) {
+        return recipeDao.deleteRecipe(title, creatorId);
+
+    }
+
+
+    @RequestMapping(value = "/Form/{recipeId}", method = RequestMethod.GET)
+    public void userChooseToDisplayRecipe(@PathVariable @RequestBody long recipeId) throws Exception {
+         recipeDao.getRecipeById(recipeId);
+
+    }
+
+
+
+
 
 
 
@@ -46,3 +152,14 @@ public class MealPlanController {
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
