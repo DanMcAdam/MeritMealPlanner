@@ -38,52 +38,8 @@ public class MealPlanController {
         return real_username.getId();
 
 
-
     }
 
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-        boolean print() {
-        Long recipeId = Long.valueOf(1);
-        Long creatorId = Long.valueOf(1);
-        String title = "Lasgna";
-        Long cookingTime = Long.valueOf(10);
-        Long prepTime = Long.valueOf(11);
-        String instructions = "various steps to follow";
-        boolean isPrivate = true;
-        String pictureLinks[] = {"link 1", "link 2"};
-        String referenceLink = "reference link";
-        String videoLink = "video Link";
-
-            /*
-             try {
-           return recipeDao.updateRecipe(recipeId,creatorId,title,cookingTime,prepTime,instructions,
-                   isPrivate,pictureLinks,referenceLink,videoLink);
-                   }
-
-             */
-
-        return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime, instructions,
-                isPrivate, pictureLinks, referenceLink, videoLink);
-
-/*
-        Long userToDelete = Long.valueOf(1);
-        Long recipeIdToDelete = Long.valueOf(9);
-
-
-        return recipeDao.deleteRecipe(recipeIdToDelete,userToDelete);
-
- */
-    }
-
-
-        @RequestMapping(value = "/meal", method = RequestMethod.GET)
-        boolean printMeal (@RequestBody Recipe recipe, Principal principal){
-
-        return recipeDao.createRecipe(recipe);
-
-
-        }
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -124,7 +80,7 @@ public class MealPlanController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/Form", method = RequestMethod.GET)
     public void userChooseToUpdateRecipe(@RequestBody Recipe recipe) {
-        recipeDao.updateRecipe(recipe);
+        //recipeDao.updateRecipe(recipe);
 
     }
 
@@ -136,11 +92,89 @@ public class MealPlanController {
     }
 
 
-    @RequestMapping(value = "/Form/{recipeId}", method = RequestMethod.GET)
-    public void userChooseToDisplayRecipe(@PathVariable @RequestBody long recipeId) throws Exception {
-         recipeDao.getRecipeById(recipeId);
+    @RequestMapping(value = "/recipe", method = RequestMethod.GET)
+    public List<Recipe> userChooseToDisplayRecipe() throws Exception {
+         return recipeDao.getAllRecipeList();
 
     }
+
+
+    //Creates recipe when the values are passed
+    @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
+    public boolean userSubmitRecipe(String title, Long cookingTime, Long prepTime, Ingredient ingredient[], String instructions,
+                                          boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader, Principal principal){
+
+        Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
+        return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime,ingredient, instructions,
+                isPrivate, pictureLinks, referenceLink, subHeader);
+
+    }
+
+
+
+
+
+
+/*
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+        boolean print() {
+        Long recipeId = Long.valueOf(1);
+        Long creatorId = Long.valueOf(1);
+        String title = "Lasgna";
+        Long cookingTime = Long.valueOf(10);
+        Long prepTime = Long.valueOf(11);
+        String instructions = "various steps to follow";
+        boolean isPrivate = true;
+        String pictureLinks[] = {"link 1", "link 2"};
+        String referenceLink = "reference link";
+        String videoLink = "video Link";
+
+
+             try {
+           return recipeDao.updateRecipe(recipeId,creatorId,title,cookingTime,prepTime,instructions,
+                   isPrivate,pictureLinks,referenceLink,videoLink);
+                   }
+
+
+
+        //return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime,ingredient[], instructions,
+              //  isPrivate, pictureLinks, referenceLink, subHeader);
+
+
+        Long userToDelete = Long.valueOf(1);
+        Long recipeIdToDelete = Long.valueOf(9);
+
+
+        return recipeDao.deleteRecipe(recipeIdToDelete,userToDelete);
+
+
+    }
+
+*/
+    /*
+        @RequestMapping(value = "/meal", method = RequestMethod.GET)
+        boolean printMeal (@RequestBody Recipe recipe, Principal principal){
+
+        return recipeDao.createRecipe(recipe);
+
+
+        }
+
+ */
+
+/*
+    @RequestMapping(value = "/recipe", method = RequestMethod.POST)
+    boolean GetRecipeFromFrontEnd (@RequestBody Recipe recipe, Principal principal){
+
+        return recipeDao.createRecipe(recipe);
+
+
+    }
+
+
+ */
+
+
 
 
 
