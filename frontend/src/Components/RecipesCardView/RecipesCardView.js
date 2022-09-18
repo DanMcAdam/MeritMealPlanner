@@ -1,19 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios';
-
-//styles
 import './RecipesCardView.css'
 
-export default function RecipesCardView({ recipes, handleClick }) {
-    // export default function RecipesCardView({ recipes }) {
-
-    var currentLocation = window.location.pathname;
-    console.log('from recipes page ' + currentLocation)
+export default function RecipesCardView({ recipes }) {
 
     const handleDelete = (id) => {
         console.log(id)
-        // axios.delete('http://localhost:3000/recipes', id)
         axios({
             method: 'DELETE',
             url: 'http://localhost:3000/recipes/' + id
@@ -24,19 +17,19 @@ export default function RecipesCardView({ recipes, handleClick }) {
         <div className='recipe-card-container'>
             {recipes.map((recipe, index) => (
                 <div className='recipe-card-item' key={recipe.id}>
-                    <h3>{index} - {recipe.title}</h3>
-                    <p>{recipe.servings}</p>
-                    <div className='recipe-instructions'>
-                        {recipe.instructions.substring(0, 100)}...
+                    <div className='recipe-card-info'>
+                        <Link to={`/recipes/${recipe.id}`}>
+                            <h3>{recipe.title}</h3>
+                            <div className='recipe-instructions'>
+                                {recipe.instructions.substring(0, 100)}...
+                            </div>
+                        </Link>
                     </div>
                     <div className='recipe-card-buttons'>
-                        {/* <button onClick={() => handleClick(recipe.id)}>delete recipe</button> */}
-                        <button onClick={() => handleDelete(recipe.id)}>delete recipe</button>
-                        <button>edit recipe</button>
+                        {/* TODO edit recipe function */}
+                        <button class="small-btn" role="button">&#x270E;</button>
+                        <button class="small-btn" role="button" onClick={() => handleDelete(recipe.id)}>&#x2716;</button>
                     </div>
-                    <Link to={`/recipes/${recipe.id}`}>
-                        View
-                    </Link>
                 </div>
             ))}
         </div>

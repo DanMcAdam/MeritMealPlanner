@@ -10,6 +10,7 @@ import Recipes from '../Recipes/Recipes'
 import Create from '../Create/Create'
 import Search from '../Search/Search'
 import RecipeDetails from '../RecipeDetails/RecipeDetails'
+import './Main.css'
 
 
 const mapStateToProps = state => {
@@ -35,27 +36,58 @@ class Main extends Component {
     }
 
     render() {
+
         const RecipeWithId = ({ match }) => {
             return <RecipeDetails id={match.params.id} />
         }
 
         return (
-            <div>
-                {this.props.token.token !== undefined ?
-                    <div>
-                        <Link to='/home'>Home | </Link>
-                        <Link to='/recipes'>Recipes |</Link>
-                        <Link to='/login' onClick={this.handleLogout}>logout</Link>
-                        <Redirect to='/home' />
 
-                    </div>
-                    :
-                    <div>
-                        <Link to='/login'>Home | </Link>
-                        {/* recipes on main for non logged in users? */}
-                        <Link to='/recipes'>Recipes |</Link>
-                    </div>
-                }
+
+
+            <div>
+                <header>
+
+
+                    <img
+                        src=".././LogoIcon-Small.png"
+                        className="logo-icon"
+                    />
+                    <img
+                        src=".././LogoText-Large.png"
+                        className="logo-text"
+                    />
+                    {/* </header> */}
+
+
+                    {/* <div className='header-links'> */}
+
+                    {this.props.token.token !== undefined ?
+                        <div className='header-links'>
+                            <Link to='/home'>Home | </Link>
+                            <Link to='/recipes'>Recipes |</Link>
+                            <Link to='/login' onClick={this.handleLogout}>logout</Link>
+                            <Redirect to='/home' />
+
+                        </div>
+                        :
+                        <div className='header-links'>
+                            <ul>
+
+
+                                <li> <Link to='/login'>Home </Link> </li>
+                                {/* recipes on main for non logged in users? */}
+                                <li><Link to='/recipes'> Recipes </Link></li>
+                                <li><Link to='/mealplans'>Meal Plans</Link></li>
+
+                            </ul>
+                        </div>
+                    }
+
+                    {/* </div> */}
+                </header>
+
+
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
                     <Route path='/register' component={() => <Register />} />
@@ -64,7 +96,6 @@ class Main extends Component {
                     <Route exact path="/recipes/:id" component={RecipeWithId} />
                     <Route path='/recipes' component={() => <Recipes />} />
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
-
                     <Route path='/create' component={() => <Create />} />
                     <Route path="/search" component={() => <Search />} />
 
@@ -74,6 +105,7 @@ class Main extends Component {
                     <Route path='/recipes/:id'><RecipeDetails /></Route>
                     <Redirect to='/login' /> */}
                 </Switch>
+
             </div>
         )
     }

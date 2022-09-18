@@ -2,244 +2,232 @@ import { useRef } from "react"
 import { useState } from "react"
 import { useFetch } from "../../hooks/useFetch"
 import { Link } from "react-router-dom"
-
-
-//styles
 import './RecipeForm.css'
-import { useEffect } from "react"
 
-export default function RecipeForm({ addRecipe }) {
+export default function RecipeForm() {
+
+    //optional - send default values
+    const [tags, setTags] = useState([])
 
     const [title, setTitle] = useState('')
-    const [ingredients, setIngredients] = useState([])
     const [instructions, setInstructions] = useState('')
+    const [ingredients, setIngredients] = useState([])
     const [newIngredient, setNewIngredient] = useState('')
-    const ingredientInput = useRef(null)
-    // const history = useHistory()
+    const [prepTime, setPrepTime] = useState({
+        prepHrs: '',
+        prepMins: ''
+    })
+    const [cookTime, setCookTime] = useState({
+        cookHrs: '',
+        cookMins: ''
+    })
+
 
     const { postData, data, error } = useFetch("http://localhost:3000/recipes", "POST")
 
     const resetForm = () => {
         setTitle('')
-        setIngredients([])
         setInstructions('')
         setNewIngredient('')
+        setIngredients([])
+        setPrepTime({
+            prepHrs: '',
+            prepMins: ''
+        })
+        setCookTime({
+            cookHrs: '',
+            cookMins: ''
+        })
     }
 
-    //saving to json server will auto generate unique id
+    //NOTE: saving to json server will auto generate unique id
     const handleSubmit = (e) => {
         e.preventDefault()
-        postData({ title, ingredients, instructions })
+        postData({ title, ingredients, instructions, cookTime, prepTime })
         resetForm()
     }
-
-    //original for testing 
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-    //     const event = {
-    //         title: title,
-    //         ingredients: ingredients,
-    //         instructions: instructions,
-    //         id: Math.floor(Math.random() * 10000)
-    //     }
-    //     console.log(event)
-    //     // addRecipe(event)
-    //     resetForm()
-    // }
-
-    const handleAdd = (e) => {
-        e.preventDefault()
-        const ing = newIngredient.trim()
-
-        if (ing && !ingredients.includes(ing)) {
-            setIngredients(prevIngredients => [...prevIngredients, ing])
-        }
-        setNewIngredient('')
-        ingredientInput.current.focus()
-    }
-
-
-    // const List = ({ list }) => (
-    //     // <ul>
-    //     //     {ingredients.map((item) => (
-    //     //         <li key={item.id}>{item.name}</li>
-    //     //     ))}
-    //     // </ul>
-    // );
-
-
 
     const ingredientList = ingredients.map((ingredient) => {
         return (
             <ul>
-                <li key={ingredient}>{ingredient}</li>
+                <li key={ingredient.id}>{ingredient.note}</li>
             </ul>
         )
     })
 
+    const handlePrepChange = (e) => {
+        console.log(e.target.value)
+        const { name, value } = e.target
+        console.log({ name }, { value })
+        setPrepTime((prevPrepTime) => {
+            return { ...prevPrepTime, [name]: value }
+        })
+    }
 
-    // instead we will use inline functions to update individual state
-    //     const handleChange = (e) => {
-    //         console.log(e.target.value)
-    //         setTitle(e.target.value)
-    //     }
+    const handleCookChange = (e) => {
+        console.log(e.target.value)
+        const { name, value } = e.target
+        console.log({ name }, { value })
+        setCookTime((prevCookTime) => {
+            return { ...prevCookTime, [name]: value }
+        })
+    }
 
-    //after we recieve data response redirect to recipes page
-    // useEffect(() => {
-    //     if (data) {
-    //         history.push('/recipes')
-    //     }
-    // }, [data])
+    const handleAdd = (e) => {
+        e.preventDefault()
+        const newIng = {
+            id: Math.floor(Math.random() * 10000),
+            note: newIngredient
+        }
+        if (newIngredient && !ingredients.includes(newIngredient)) {
+            setIngredients(prevIngredients => [...prevIngredients, newIng])
+        }
+        setNewIngredient('')
+    }
 
     return (
 
         <form className="recipeform" onSubmit={handleSubmit}>
 
-            <h2 className="recipeform-heading">New Recipe</h2>
+            <h2 id="recipeform-heading">New Recipe</h2>
+            <div className="recipeform-section"></div>
 
             <div className="recipeform-section">
-
                 <div className="recipeform-row">
-                    <label for="recipe-title" />
-                    <input
-                        type="text"
-                        id="recipe-title"
-                        name='title'
-                        placeholder='Recipe Title'
-                        onChange={(e) => setTitle(e.target.value)}
-                        value={title}
-                    />
-                </div>
-
-                <div className="recipeform-row">
-
-                    <div className="ingredients">
-                        <label for="recipe-ingredients" />
+                    <div className="row-with-span">
+                        <label htmlFor="recipe-title" />
+                        <span>New Title</span>
                         <input
                             type="text"
-                            id="recipe-ingredients"
-                            name='ingredients'
-                            placeholder='Ingredients'
-                            onChange={(e) => setNewIngredient(e.target.value)}
-                            value={newIngredient}
-                            ref={ingredientInput}
+                            id="recipe-title"
+                            name='title'
+                            placeholder='Title'
+                            onChange={(e) => setTitle(e.target.value)}
+                            value={title}
                         />
-                        <label for="ingredient quantity" />
-                        <input
-                            type="number"
-                            id="ingredient-quantity"
-                            name="ingredient-quantity"
-                            placeholder="Qty"
-                            min={0}
-                        // onChange={(e) => setQuantity(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            id="ingredient-measurement"
-                            name="ingredient-measurement"
-                            placeholder="Unit"
-                            list="units"
-                        // onChange={(e) => setQuantity(e.target.value)}
-                        />
-                        <datalist id="units">
-                            <option>tbsp.</option>
-                            <option>tsp.</option>
-                            <option>cup</option>
-                            <option>pint</option>
-                        </datalist>
-                        <img src="plussign.png" className="add-ingredient-img" onClick={handleAdd} />
-
-                        {/* <button className="add-ingredient-btn" onClick={handleAdd} >Add</button> */}
                     </div>
-                    {ingredientList}
                 </div>
-
                 <div className="recipeform-time-container">
-
-                    <div className="recipeform-row">
+                    <div className="recipeform-row" id="recipeform-time-row">
                         <fieldset>
                             <legend>Prep time</legend>
                             <div className="time">
-                                <label for="prep-time-hrs" />
+                                <label htmlFor="prep-time-hrs" />
                                 <input
                                     type="number"
                                     id="prep-time-hrs"
+                                    name="prepHrs"
                                     placeholder="Hrs"
                                     min={0}
-                                // onChange={(e) => setPrepHrs(e.target.value)}
+                                    value={prepTime.prepHrs}
+                                    onChange={handlePrepChange}
                                 />
                             </div>
                             <div className="time">
-                                <label for="prep-time-mins">
+                                <label htmlFor="prep-time-mins">
                                     <input
                                         type="number"
                                         id="prep-time-mins"
-                                        name="prep-mins"
+                                        name="prepMins"
                                         placeholder="Mins"
                                         min={0}
-                                    // onChange={(e) => setPrepMins(e.target.value)}
+                                        value={prepTime.prepMins}
+                                        onChange={handlePrepChange}
                                     />
                                 </label>
                             </div>
                         </fieldset>
-                    </div>
 
-                    <div className="recipeform-row">
                         <fieldset>
                             <legend>Cook time</legend>
                             <div className="time">
-
-                                <label for="cook-time-hrs">
+                                <label htmlFor="cook-time-hrs">
                                     <input
                                         type="number"
                                         id='cook-time-hrs'
+                                        name="cookHrs"
                                         placeholder="Hrs"
                                         min={0}
-                                    // onChange={(e) => setCookHrs(e.target.value)}
-
+                                        value={cookTime.cookHrs}
+                                        onChange={handleCookChange}
                                     />
                                 </label>
                             </div>
                             <div className="time">
-                                <label for="cook-time-mins">
+                                <label htmlFor="cook-time-mins">
                                     <input
                                         type="number"
                                         id='cook-time-mins'
+                                        name="cookMins"
                                         placeholder="Mins"
                                         min={0}
-                                    // onChange={(e) => setCookMins(e.target.value)}                               
+                                        value={cookTime.cookMins}
+                                        onChange={handleCookChange}
                                     />
                                 </label>
                             </div>
                         </fieldset>
                     </div>
+                </div>
+            </div>
 
+            <div className="recipeform-section ingredient-section" >
+                <div className="recipeform-row">
+                    <div className="row-with-span">
+                        <label htmlFor="recipe-ingredient" />
+                        <span>Ingredient</span>
+                        <input
+                            type="text"
+                            id="recipe-ingredient"
+                            name='note'
+                            placeholder='Ingredient'
+                            onChange={(e) => setNewIngredient(e.target.value)}
+                            value={newIngredient}
+                        // ref={ingredientInput}
+                        />
+                        <button className="add-ingredient-btn" onClick={handleAdd}>+</button>
+                    </div>
+                </div>
+                <div className="recipeform-row">
+                    {ingredients && (
+                        <div className="recipeform-ingredient-list">
+                            {ingredientList}
+                        </div>
+                    )}
                 </div>
             </div>
 
             <div className="recipeform-section">
+                <div className="recipeform-row" id="recipeform-row-instructions">
+                    <label htmlFor="instructions" />
+                    <textarea
+                        id="instructions"
+                        name='instructions'
+                        placeholder='Instructions'
+                        rows={3}
+                        onChange={(e) => setInstructions(e.target.value)}
+                        value={instructions}
+                    />
+                </div>
 
-                <label for="instructions" />
-                <span>Instructions</span>
-                <input
-                    type="text"
-                    id="instructions"
-                    name='instructions'
-                    placeholder='Instructions'
-                    onChange={(e) => setInstructions(e.target.value)}
-                    value={instructions}
-                />
+                <div className="bottom-form-buttons">
+                    <div id="btn-1">
+                        <button class="med-btn" role="button" onClick={handleSubmit}>Add Recipe</button>
+                    </div>
+                    <div id="btn-2">
+                        <Link to="/recipes">
+                            <button class="med-btn" role="button">All Recipes</button>
+                        </Link>
+                    </div>
+                </div>
 
+            </div>
+
+            <div className="recipeform-section">
                 <p>sanity check:</p>
                 <p>title - {title}</p>
                 <p>new ingredient - {newIngredient}</p>
-                <p>all ingredients - {ingredients}</p>
                 <p>instructions - {instructions}</p>
-                {/* button will inherit onSubmit from form */}
-                <button onClick={handleSubmit}>Add Recipe</button>
-                <Link to="/recipes">
-                    <button>Go Back to Recipes</button>
-                </Link>
             </div>
 
         </form>

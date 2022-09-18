@@ -1,97 +1,51 @@
-// import { useParams } from 'react-router-dom'
-import React, { useState } from 'react'
 import { useFetch } from '../../hooks/useFetch'
-import { withRouter } from "react-router"
-import { matchPath } from 'react-router'
-import { useEffect } from 'react'
-
-
-//styles
 import './RecipeDetails.css'
 
-// const id = window.location.pathname;
-
-
-//Recipe Detail View
 export default function RecipeDetails(props) {
 
-    console.log(props.id)
-    var currentLocation = window.location.pathname;
-    console.log('from recipes details ' + currentLocation)
-
-    // var currentLocation = window.location.pathname;
-    // console.log('from individual recipe' + currentLocation)
-
-    // Can't use useParams because react-router-dom v4.2.2
-    // const { id } = useParams();
-    // const currentLocation = window.location.pathname;
-    // console.log(currentLocation)
-
-    // const ShowTheLocationWithRouter = withRouter(ShowTheLocation);
-    // const currentRoute = matchPath(this.props.location.pathname)
-    // console.log(`My current route key is : ${currentRoute.key}`)
-
-    // console.log(this.props.location.pathname);
-
-
-    // const url = 'http://localhost:3000/' + id
-    // const { error, isPending, data: recipe } = useFetch(url)
-    // console.log(url)
-    // console.log(recipe)
-
-    const [recipe, setRecipe] = useState([])
-    // const { id } = this.props.id
-    // console.log(id)
-
-    // const id = this.props.match.params.id
-    useEffect(() => {
-        // const { id } = this.props.location.pathname
-        const id = props.id
-
-
-        fetch(`http://localhost:3000/recipes/${id}`)
-            .then(response => response.json())
-            .then(json => setRecipe(json))
-    }, [])
-
-    // fetch(`http://localhost:3000/recipes/${id}`)
-    //     .then((recipe) => {
-    //         this.setState(() => ({ recipe }))
-    //     })
-
-
-    // function componentDidMount() {
-    //     const { id } = this.props.match.params
-
-    //     fetch(`http://localhost:3000/recipes/${id}`)
-    //         .then((recipe) => {
-    //             this.setState(() => ({ recipe }))
-    //         })
-    // }
-
+    const id = props.id
+    const url = 'http://localhost:3000/recipes/' + id
+    const { error, isPending, data: recipe } = useFetch(url)
 
     return (
-        <div className="recipe-detail">
-            {/* {error && <p className="error">{error}</p>}
-            {isPending && <p className="loading">Loading...</p>} */}
-            {/* <h3>ID: {match.params.id}</h3> */}
-            {/* <h3>ID: {this.props.match.params.id}</h3> */}
-            {recipe && <h1>{recipe.title}</h1>}
+        <div className="recipe-container">
+            {error && <p className="error">{error}</p>}
+            {isPending && <p className="loading">Loading...</p>}
 
-        </div >
+            {recipe && (
+                <div className="recipe-details">
+                    <div class="recipe-section title-section" >
+                        <h2>{recipe.title}</h2>
+                    </div>
+                    <div className="recipe-section time-section" >
+                        <p>Prep Time: {recipe.prepTime.prepHrs && recipe.prepTime.prepHrs + " Hrs"} {recipe.prepTime.prepMins && recipe.prepTime.prepMins + " Mins"}
+                        </p>
+                        <p>Cook Time: {recipe.cookTime.cookHrs && recipe.cookTime.cookHrs + " Hrs"} {recipe.cookTime.cookMins && recipe.cookTime.cookMins + " Mins"}
+                        </p>
+                    </div>
+
+                    <div className="recipe-section ingredients-section">
+                        {recipe.ingredients && (
+                            <ul>
+                                {recipe.ingredients.map((ingredient) => {
+                                    return (
+                                        <li key={ingredient.note}>
+                                            {ingredient.note}
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        )}
+                    </div>
+
+                    <div className="recipe-section instructions-section">
+                        <p>{recipe.instructions}</p>
+                    </div>
+                    <div className="recipe-section bottom-section">
+                        Created: mm/dd/yyy
+                    </div>
+                </div >
+            )}
+        </div>
     )
 }
-
-
-
-// {recipe && (
-//     <>
-//         <h2 className="page-title">{recipe.title}</h2>
-//          {/* <p>Takes {recipe.cookingTime} to cook.</p> */}
-// <ul>
-//     {recipe.ingredients.map(ing => <li key={ing}>ing</li>)}
-// </ul>
-// <p className="instructions">{recipe.instructions}</p>
-// </>
-// )
-// }

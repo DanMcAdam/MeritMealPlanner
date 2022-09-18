@@ -8,9 +8,9 @@ import './Create.css'
 export default function Create() {
     return (
         <div>
-            <header>
+            {/* <div>
                 <h2>[Beautiful Header]</h2>
-            </header>
+            </div> */}
             <RecipeForm />
         </div>
     )
