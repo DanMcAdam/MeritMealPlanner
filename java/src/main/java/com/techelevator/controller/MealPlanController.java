@@ -49,14 +49,14 @@ public class MealPlanController {
             switch (value){
 
                 case 1: {
-                    userChooseToDisplayRecipe(recipe.getRecipeId());
+                    //userChooseToDisplayRecipe(recipe.getRecipeId());
 
                 }
                 case 2:{
-                    userChooseToUpdateRecipe(recipe);
+                    //userChooseToUpdateRecipe(recipe);
                 }
                 case 3:{
-                    userChooseToDeleteRecipe(recipe.getTitle(), recipe.getCreatorId());
+                    //userChooseToDeleteRecipe(recipe.getTitle(), recipe.getCreatorId());
                 }
                 default:{
                     System.out.println("Recipe not found");
@@ -76,7 +76,7 @@ public class MealPlanController {
         return recipeDao.getRecipeListFromUser(userId);
 
     }
-
+/*
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/Form", method = RequestMethod.GET)
     public void userChooseToUpdateRecipe(@RequestBody Recipe recipe) {
@@ -91,7 +91,7 @@ public class MealPlanController {
 
     }
 
-
+*/
     @RequestMapping(value = "/recipe", method = RequestMethod.GET)
     public List<Recipe> userChooseToDisplayRecipe() throws Exception {
          return recipeDao.getAllRecipeList();
@@ -101,12 +101,11 @@ public class MealPlanController {
 
     //Creates recipe when the values are passed
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
-    public boolean userSubmitRecipe(String title, Long cookingTime, Long prepTime, Ingredient ingredient[], String instructions,
-                                          boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader, Principal principal){
-
-        Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
-        return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime,ingredient, instructions,
-                isPrivate, pictureLinks, referenceLink, subHeader);
+    public boolean userSubmitRecipe(@RequestBody Recipe recipe){
+        //System.out.println(principal);
+        //Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
+        //recipe.setCreatorId(creatorId);
+        return recipeDao.createRecipe(recipe);
 
     }
 

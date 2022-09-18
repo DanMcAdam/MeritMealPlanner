@@ -12,7 +12,7 @@ export default function Recipes() {
     const [query, setQuery] = useState('')
 
     useEffect(() => {
-        fetch('http://localhost:3000/recipes')
+        fetch('http://localhost:8081/recipes')
             .then(response => response.json())
             .then(json => setRecipeCollection(json))
     }, [])

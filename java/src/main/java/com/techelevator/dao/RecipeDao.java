@@ -28,13 +28,14 @@ public interface RecipeDao
         //public boolean updateRecipe(Recipe recipe);
 
 
-        public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime, Ingredient ingredient[], String instructions,
-                                    boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader);
+        //public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime, Ingredient ingredient[], String instructions,
+                                   // boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader);
 
 
         public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
                                     boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader);
 
         public boolean deleteRecipe(String title, Long creatorId);
-
-    }
+    
+    boolean createRecipe(Recipe recipe);
+}
