@@ -49,7 +49,7 @@ public class MealPlanController {
             switch (value){
 
                 case 1: {
-                    userChooseToDisplayRecipe(recipe.getRecipeId());
+                    //userChooseToDisplayRecipe(recipe.getRecipeId());
 
                 }
                 case 2:{
