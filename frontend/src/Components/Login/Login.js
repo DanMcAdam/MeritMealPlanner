@@ -34,6 +34,10 @@ class Login extends Component {
 
 
         await this.props.dispatch(addToken(userWithToken.data.token))
+        //console.log(this.props.dispatch(addToken(userWithToken.data.token)))
+        const token = this.props.dispatch(addToken(userWithToken.data.token));
+
+        //console.log("this is the token " + array);
         await this.props.dispatch(addUser(userWithToken.data.user));
     }
 
