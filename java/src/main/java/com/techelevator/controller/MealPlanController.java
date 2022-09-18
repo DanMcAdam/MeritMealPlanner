@@ -106,7 +106,7 @@ public class MealPlanController {
         //Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
         //recipe.setCreatorId(creatorId);
         return recipeDao.createRecipe(recipe);
-
+        
     }
 
 
