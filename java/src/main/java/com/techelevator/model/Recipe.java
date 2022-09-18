@@ -14,7 +14,7 @@ public class Recipe
     private boolean isPrivate;
     private String[] pictureLinks;
     private String referenceLink;
-    private String videoLink;
+    private String subHeader;
     private Ingredient[] ingredients;
     
     public long getRecipeId()
@@ -117,14 +117,14 @@ public class Recipe
         this.referenceLink = referenceLink;
     }
     
-    public String getVideoLink()
+    public String getSubHeader()
     {
-        return videoLink;
+        return subHeader;
     }
     
-    public void setVideoLink(String videoLink)
+    public void setSubHeader(String videoLink)
     {
-        this.videoLink = videoLink;
+        this.subHeader = videoLink;
     }
     
     public Ingredient[] getIngredients()

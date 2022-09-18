@@ -2,7 +2,6 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Ingredient;
 import com.techelevator.model.IngredientTypes;
-import com.techelevator.model.Recipe;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
@@ -17,6 +16,7 @@ public class JdbcIngredientDao implements IngredientDao
         this.jdbcTemplate = jdbcTemplate;
     }
     
+    @Override
     public Ingredient[] findIngredientsByRecipeId(long recipeId) throws Exception
     {
         List<Ingredient> ingredientList = new ArrayList<>();
@@ -42,7 +42,8 @@ public class JdbcIngredientDao implements IngredientDao
         return ingredientList.toArray(ingredientArr);
     }
     
-    Ingredient mapRowToIngredient(SqlRowSet rs) throws Exception
+    @Override
+    public Ingredient mapRowToIngredient(SqlRowSet rs) throws Exception
     {
         Ingredient ingredient = new Ingredient();
         try

@@ -1,6 +1,5 @@
 package com.techelevator.dao;
 
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +7,11 @@ import com.techelevator.model.MealPlanDay;
 import com.techelevator.model.MealPlanDayRecipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.techelevator.model.MealPlan;
 
-import java.util.List;
 @Service
 public class JdbcMealPlanDao implements MealPlanDao{
 
@@ -44,8 +39,10 @@ public class JdbcMealPlanDao implements MealPlanDao{
     public int getOwnerId(Long ownerId) {
         return jdbcTemplate.queryForObject("SELECT owner_id FROM meal_plan WHERE owner_id = ?", int.class, ownerId);
     }
-
-    MealPlanDayRecipe[] findAllRecipesInMealPlanDay(Long dayId) throws Exception
+    
+    @Override
+    public MealPlanDayRecipe[] findAllRecipesInMealPlanDay(Long dayId) throws Exception
+    
     {
         List<MealPlanDayRecipe> mealPlanDayRecipeList = new ArrayList<>();
         
@@ -66,7 +63,8 @@ public class JdbcMealPlanDao implements MealPlanDao{
         return mealPlanDayRecipeArr;
     }
     
-    MealPlanDay[] findAllDayInMealPlan(long planId) throws Exception
+    @Override
+    public MealPlanDay[] findAllDayInMealPlan(long planId) throws Exception
     {
         List<MealPlanDay> mealPlanDayList = new ArrayList<>();
         
@@ -86,8 +84,8 @@ public class JdbcMealPlanDao implements MealPlanDao{
         MealPlanDay[] mealPlanDayArr = new MealPlanDay[mealPlanDayList.size()];
         return mealPlanDayList.toArray(mealPlanDayArr);
     }
-    
-    MealPlan mapRowToMealPlan(SqlRowSet rs) throws Exception
+    @Override
+    public MealPlan mapRowToMealPlan(SqlRowSet rs) throws Exception
     {
         MealPlan mealPlan = new MealPlan();
         try
@@ -166,6 +164,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
         return true;
     }
 
+    @Override
     //The following has not been tested.
     public boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle){
 
@@ -178,7 +177,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
         return true;
 
     }
-
+    @Override
     public boolean deletePlan(Long planId, Long ownerId){
 
         String deleteMealPlan = "DELETE FROM meal_plan WHERE plan_id = ? AND owner_id = ? ";

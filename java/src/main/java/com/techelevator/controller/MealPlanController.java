@@ -1,13 +1,11 @@
 package com.techelevator.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.techelevator.dao.UserDao;
-import com.techelevator.model.LoginDTO;
-import com.techelevator.model.RegisterUserDTO;
-import com.techelevator.model.User;
-import com.techelevator.model.UserAlreadyExistsException;
+import com.techelevator.dao.*;
+import com.techelevator.model.*;
 import com.techelevator.security.jwt.JWTFilter;
 import com.techelevator.security.jwt.TokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,24 @@ import javax.validation.Valid;
 @CrossOrigin
 
 public class MealPlanController {
+    @Autowired
+    private MealPlanDao mealPlanDao;
+    private RecipeDao recipeDao;
+    private IngredientDao ingredientDao;
+    
+    public MealPlanController (MealPlanDao mealPlan, RecipeDao recipe, IngredientDao ingredient)
+    {
+        this.mealPlanDao = mealPlan;
+        this.recipeDao = recipe;
+        this.ingredientDao = ingredient;
+    }
+    
+    @RequestMapping(path = "/{userId}/mealPlans", method = RequestMethod.GET)
+    public MealPlan[] allMealPlans (@PathVariable Long userId)
+    {
+    
+    }
+
 
 
 

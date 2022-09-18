@@ -3,11 +3,9 @@ package com.techelevator.dao;
 import com.techelevator.model.Recipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import javax.sql.rowset.JdbcRowSet;
 import java.sql.Array;
-import java.sql.Date;
 
 //TODO: recipe map -> ingredient query for relational table that holds recipe ingredients to fill array of ingredients for Recipe.ingredients
 public class JdbcRecipeDao implements RecipeDao
@@ -18,6 +16,7 @@ public class JdbcRecipeDao implements RecipeDao
         this.jdbcTemplate = jdbcTemplate;
     }
     
+    @Override
     public Recipe getRecipeById(Long recipeId) throws Exception
     {
         String sql = "SELECT * FROM recipe WHERE recipe_id = ?;";
@@ -40,7 +39,8 @@ public class JdbcRecipeDao implements RecipeDao
     
 
     
-    Recipe mapRowToRecipe(JdbcRowSet rs) throws Exception
+    @Override
+    public Recipe mapRowToRecipe(JdbcRowSet rs) throws Exception
     {
         Recipe recipe = new Recipe();
         
@@ -68,7 +68,8 @@ public class JdbcRecipeDao implements RecipeDao
     }
 
     //Not yet tested but here are the insertion, update, deletion statements.
-    public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
+    @Override
+    public boolean createRecipe(Long creatorId, String title, Long cookingTime, Long prepTime, String instructions,
                                 boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink) {
 
 
@@ -86,7 +87,8 @@ public class JdbcRecipeDao implements RecipeDao
     }
 
     //The following has not been tested.
-    public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
+    @Override
+    public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime, String instructions,
                                 boolean isPrivate, String[] pictureLinks, String referenceLink, String videoLink){
 
         long millis=System.currentTimeMillis();
@@ -105,6 +107,7 @@ public class JdbcRecipeDao implements RecipeDao
     }
     //not yet tested.
 
+    @Override
     public boolean deleteRecipe(Long recipeId, Long creatorId){
 
         String deleteRecipeSql = "DELETE FROM recipe WHERE recipe_id = ? AND creator_id = ? ";

@@ -6,7 +6,29 @@ public class Ingredient
     private String ingredientName;
     private long superCategory;
     private IngredientTypes ingredientTypes;
+    private int amount;
+    private Measurement measurement;
     private String recipeNote;
+    
+    public int getAmount()
+    {
+        return amount;
+    }
+    
+    public void setAmount(int amount)
+    {
+        this.amount = amount;
+    }
+    
+    public Measurement getMeasurement()
+    {
+        return measurement;
+    }
+    
+    public void setMeasurement(Measurement measurement)
+    {
+        this.measurement = measurement;
+    }
     
     public long getIngredientId()
     {
@@ -59,23 +81,3 @@ public class Ingredient
     }
 }
 
-public enum IngredientTypes
-{
-    grain,
-    dairy,
-    fruit,
-    herbs_spice_flavors,
-    vegetable,
-    pasta,
-    meat,
-    fish,
-    oil_or_fat,
-    acid,
-    sweetener,
-    egg,
-    starch,
-    liquid,
-    alcohol,
-    baking,
-    Other
-}
