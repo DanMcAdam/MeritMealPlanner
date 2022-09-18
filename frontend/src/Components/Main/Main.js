@@ -11,6 +11,7 @@ import Create from '../Create/Create'
 import Search from '../Search/Search'
 import RecipeDetails from '../RecipeDetails/RecipeDetails'
 import './Main.css'
+import Mealplans from '../Mealplans/Mealplans'
 
 
 const mapStateToProps = state => {
@@ -98,6 +99,7 @@ class Main extends Component {
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home /> : null} />
                     <Route path='/create' component={() => <Create />} />
                     <Route path="/search" component={() => <Search />} />
+                    <Route path="/mealplans" component={() => <Mealplans />} />
 
 
                     {/* <Route path="/search"><Search /></Route>
