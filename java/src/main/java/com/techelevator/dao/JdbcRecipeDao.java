@@ -164,6 +164,7 @@ public class JdbcRecipeDao implements RecipeDao
             try {
                 jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
                         recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getSubHeader());
+                System.out.println("Success");
             } catch (DataAccessException e) {
                 return false;
             }

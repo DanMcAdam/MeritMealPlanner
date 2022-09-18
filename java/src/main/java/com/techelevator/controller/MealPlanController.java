@@ -102,7 +102,7 @@ public class MealPlanController {
     //Creates recipe when the values are passed
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
     public boolean userSubmitRecipe(@RequestBody Recipe recipe){
-        //System.out.println(principal);
+        //System.out.println(principal.getName());
         //Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
         //recipe.setCreatorId(creatorId);
         return recipeDao.createRecipe(recipe);
