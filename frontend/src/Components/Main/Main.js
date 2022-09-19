@@ -1,11 +1,11 @@
 import {Component} from 'react'
-import {Switch, Route, Redirect, Link} from 'react-router-dom'
+import {Switch, Route, Redirect, Link, withRouter} from 'react-router-dom'
 import Login from '../Login/Login'
 import Register from '../Register/Register'
 import Home from '../Home/Home'
+import MealPlanner from '../Home/HomeComponents/MealPlanner'
 import {addToken, deleteUser} from '../../Redux/actionCreators'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
 
 const mapStateToProps = state => {
     return {
@@ -34,15 +34,19 @@ class Main extends Component {
             <div>
                 {this.props.token.token !== undefined ?
                         <div>
-                            <Link to='/home'>Home | </Link>
-                            <Link to='/login' onClick={this.handleLogout}>logout</Link> 
+                            {/* <Link button to='/home'>Home | </Link> */}
+                            <Link to='/login' onClick={this.handleLogout}>Logout</Link> 
                             <Redirect to='/home'/>
 
                         </div>  
                     : 
-                        <Link to='/login'>Home | </Link>
+                        <div>
+                            <Link to='/login'>Login</Link>
+                            {/* <Redirect to='/landingpage'/> */}
+                        </div>
                 }
                 <Switch>
+                    <Route path='/mealplanner' component={this.props.token.token !== undefined ? () => <MealPlanner/>: null}/>
                     <Route path='/login' component={() => <Login/>}/>
                     <Route path='/register'component={() => <Register/>}/>
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home/> : null}/>

@@ -26,6 +26,7 @@ class Register extends Component{
         const data = {username: this.state.username, password: this.state.password, confirmPassword: this.state.confirmPassword, role: 'USER'}
         if(this.state.password === this.state.confirmPassword){
             axios.post(baseUrl + "/register", data)
+            alert("Success!!")
         }else{
             alert("Password and Confirm Password must match!!!")
         }
