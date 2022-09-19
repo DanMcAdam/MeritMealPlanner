@@ -16,9 +16,9 @@ export default function RecipesCardView({ recipes }) {
     return (
         <div className='recipe-card-container'>
             {recipes.map((recipe, index) => (
-                <div className='recipe-card-item' key={recipe.id}>
+                <div className='recipe-card-item' key={recipe.recipeId}>
                     <div className='recipe-card-info'>
-                        <Link to={`/recipes/${recipe.id}`}>
+                        <Link to={`/recipes/${recipe.recipeId}`}>
                             <h3>{recipe.title}</h3>
                             <div className='recipe-instructions'>
                                 {recipe.instructions.substring(0, 100)}...
@@ -28,7 +28,7 @@ export default function RecipesCardView({ recipes }) {
                     <div className='recipe-card-buttons'>
                         {/* TODO edit recipe function */}
                         <button class="small-btn" role="button">&#x270E;</button>
-                        <button class="small-btn" role="button" onClick={() => handleDelete(recipe.id)}>&#x2716;</button>
+                        <button class="small-btn" role="button" onClick={() => handleDelete(recipe.recipeId)}>&#x2716;</button>
                     </div>
                 </div>
             ))}

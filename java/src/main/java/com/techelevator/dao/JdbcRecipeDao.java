@@ -6,14 +6,16 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.sql.DataSource;
 import javax.sql.rowset.JdbcRowSet;
 import java.security.Principal;
-import java.sql.Array;
-import java.sql.Date;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Properties;
+@CrossOrigin
 @Service
 //TODO: recipe map -> ingredient query for relational table that holds recipe ingredients to fill array of ingredients for Recipe.ingredients
 public class JdbcRecipeDao implements RecipeDao
@@ -23,17 +25,21 @@ public class JdbcRecipeDao implements RecipeDao
     public JdbcRecipeDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
-
-
-
+    
+    public static Connection getConnection(String url,
+                                           Properties info)
+    {
+        return null;
+    }
+    
+    
     public List<Recipe> getRecipeListFromUser(int creatorId) throws Exception{
 
         List<Recipe> recipes = new ArrayList<>();
 
         String sql = "SELECT * FROM recipe WHERE creator_id = ?";
 
-        JdbcRowSet recipeList = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, creatorId);
+        SqlRowSet recipeList = jdbcTemplate.queryForRowSet(sql, creatorId);
         mapRowToRecipe(recipeList);
 
         return recipes;
@@ -42,25 +48,24 @@ public class JdbcRecipeDao implements RecipeDao
 
     public List<Recipe> getAllRecipeList() throws Exception{
 
-        List<Recipe> recipes = new ArrayList<>();
+        List<Recipe> recipeList = new ArrayList<>();
 
         String sql = "SELECT * FROM recipe";
 
-        JdbcRowSet recipeList = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql);
-        mapRowToRecipe(recipeList);
-
+        SqlRowSet rs = jdbcTemplate.queryForRowSet(sql);
         try
         {
-            if(recipeList.next())
+            while(rs.next())
             {
-                recipes.add(mapRowToRecipe(recipeList));
+
+                recipeList.add(mapRowToRecipe(rs));
             }
         }
         catch (Exception e)
         {
             throw new Exception("Error querying for recipe by name");
         }
-        return recipes;
+        return recipeList;
 
     }
 
@@ -70,7 +75,7 @@ public class JdbcRecipeDao implements RecipeDao
     {
         String sql = "SELECT * FROM recipe WHERE recipe_id = ?;";
     
-        JdbcRowSet rowSet = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, recipeId);
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, recipeId);
         
         try
         {
@@ -92,7 +97,7 @@ public class JdbcRecipeDao implements RecipeDao
 
         List<Recipe> recipesNames = new ArrayList<>();
 
-        JdbcRowSet rowSet = (JdbcRowSet) jdbcTemplate.queryForRowSet(sql, namesOfRecipe);
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, namesOfRecipe);
 
         try
         {
@@ -113,28 +118,27 @@ public class JdbcRecipeDao implements RecipeDao
 
     
 
-    public Recipe mapRowToRecipe(JdbcRowSet rs) throws Exception
+    public Recipe mapRowToRecipe(SqlRowSet rs) throws Exception
     {
         Recipe recipe = new Recipe();
-        
         try
         {
-            recipe.setRecipeId(rs.getLong("recipe_id"));
-            recipe.setCreatorId(rs.getLong("creator_id"));
-            recipe.setTitle(rs.getString("title"));
-            recipe.setDateAdded(rs.getDate("date_added"));
-            recipe.setCookingTime(rs.getInt("cooking_time"));
-            recipe.setPrepTime(rs.getInt("prep_time"));
-            recipe.setInstructions(rs.getString("instructions"));
-            recipe.setPrivate(rs.getBoolean("private"));
-            Array a = rs.getArray("picture_links");
-            recipe.setPictureLinks((String[])a.getArray());
-            recipe.setReferenceLink(rs.getString("reference_link"));
-            recipe.setSubHeader(rs.getString("video_link"));
+            recipe.setRecipeId(rs.getLong(1));
+            recipe.setCreatorId(rs.getLong(2));
+            recipe.setTitle(rs.getString(3));
+            recipe.setDateAdded(rs.getDate(4));
+            recipe.setCookingTime(rs.getInt(5));
+            recipe.setPrepTime(rs.getInt(6));
+            recipe.setInstructions(rs.getString(7));
+            recipe.setPrivate(rs.getBoolean(8));
+            //Array a = rs.getArray("picture_links");
+            //recipe.setPictureLinks((String[])a.getArray());
+            recipe.setReferenceLink(rs.getString(9));
+            recipe.setSubHeader(rs.getString(10));
         }
         catch (Exception e)
         {
-            throw new Exception("Error mapping recipe");
+            throw new Exception(e.getMessage());
         }
         
         return recipe;
@@ -161,10 +165,12 @@ public class JdbcRecipeDao implements RecipeDao
             recipe.setDateAdded(date);
             System.out.println(recipe);
             //query for items to be inserted in the recipe db
-            String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, subheader) VALUES(?,?,?,?,?,?,?,?,{?},?,?)";
+            String sql = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, reference_link, picture_links, subheader) VALUES(?,?,?,?,?,?,?,?,?,?);";
+
             try {
-                jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), "1999-01-01", recipe.getCookingTime(), recipe.getPrepTime(),
-                        recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getSubHeader());
+
+                jdbcTemplate.update(sql, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                        recipe.getInstructions(), recipe.isPrivate(), recipe.getReferenceLink(), recipe.getPictureLinks(), recipe.getSubHeader());
                 System.out.println("Success");
             } catch (DataAccessException e) {
                 return false;

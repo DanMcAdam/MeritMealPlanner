@@ -15,7 +15,7 @@ export default function RecipeForm() {
     const [title, setTitle] = useState('')
     const [instructions, setInstructions] = useState('')
     const [ingredients, setIngredients] = useState([{
-            ingredientId: 1, ingredientName: '', superCategory : null,  ingredientTypes: 'Other', amount: null, measurement : 'empty', recipeNote: '',
+            ingredientId: null, ingredientName: '', superCategory : null,  ingredientTypes: null, amount: null, measurement : null, recipeNote: '',
         }])
     const [newIngredient, setNewIngredient] = useState(
         ''

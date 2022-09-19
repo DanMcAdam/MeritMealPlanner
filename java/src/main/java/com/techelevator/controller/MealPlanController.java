@@ -92,19 +92,29 @@ public class MealPlanController {
     }
 
 */
-    @RequestMapping(value = "/recipe", method = RequestMethod.GET)
-    public List<Recipe> userChooseToDisplayRecipe() throws Exception {
+    @RequestMapping(value = "/recipes", method = RequestMethod.GET)
+    public List<Recipe> displayAllRecipes() throws Exception {
          return recipeDao.getAllRecipeList();
 
     }
-
+    
+    @RequestMapping(value = "/recipes/{id}", method = RequestMethod.GET)
+    public Recipe displayRecipeByID(@PathVariable Long id) throws Exception {
+        return recipeDao.getRecipeById(id);
+        
+    }
 
     //Creates recipe when the values are passed
+    //TODO: get principle working to populate recipe creator id
+    //TODO: Cleanup commented out code and test stuff
+    //TODO: submit recipe ingredients with recipe
+    //TODO: Pull recipe ingredients with /recipes/{id}
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
-    public boolean userSubmitRecipe(@RequestBody Recipe recipe){
-        //System.out.println(principal.getName());
-        //Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
-        //recipe.setCreatorId(creatorId);
+    public boolean userSubmitRecipe(@RequestBody Recipe recipe, Principal principal){
+        System.out.println(recipe.toString());
+        System.out.println(principal.getName());
+        Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
+        recipe.setCreatorId(creatorId);
         return recipeDao.createRecipe(recipe);
         
     }
