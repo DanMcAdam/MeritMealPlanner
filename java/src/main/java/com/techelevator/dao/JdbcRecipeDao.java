@@ -168,15 +168,15 @@ public class JdbcRecipeDao implements RecipeDao
             System.out.println(recipe);
             //query for items to be inserted in the recipe db
             String sql = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, reference_link, picture_links, subheader) VALUES(?,?,?,?,?,?,?,?,?,?) RETURNING recipe_id;";
-
             try {
                 //KeyHolder keyHolder = new GeneratedKeyHolder();
-                jdbcTemplate.update(sql, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
-                        recipe.getInstructions(), recipe.isPrivate(), recipe.getReferenceLink(), recipe.getPictureLinks(), recipe.getSubHeader());
+                recipe.setRecipeId(jdbcTemplate.queryForObject(sql, Long.class, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                        recipe.getInstructions(), recipe.isPrivate(), recipe.getReferenceLink(), recipe.getPictureLinks(), recipe.getSubHeader()));
                 System.out.println("Success");
             } catch (DataAccessException e) {
                 System.err.println(e.getMessage());
             }
+            
             return recipe;
        /* }*/
     }

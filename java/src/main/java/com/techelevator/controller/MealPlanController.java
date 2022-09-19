@@ -102,8 +102,10 @@ public class MealPlanController {
     
     @RequestMapping(value = "/recipes/{id}", method = RequestMethod.GET)
     public Recipe displayRecipeByID(@PathVariable Long id) throws Exception {
-        return recipeDao.getRecipeById(id);
         
+        Recipe recipe = recipeDao.getRecipeById(id);
+        recipe.setIngredients(ingredientDao.findIngredientsByRecipeId(recipe.getRecipeId()));
+        return recipe;
     }
 
     //Creates recipe when the values are passed

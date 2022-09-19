@@ -63,7 +63,7 @@ export default function RecipeDetails(props) {
                         <p>{recipeDetails.instructions}</p>
                     </div>
                     <div className="recipe-section bottom-section">
-                        Created: recipeDetails.dateAdded
+                        Created: {recipeDetails.dateAdded}
                     </div>
                 </div >
             )}
