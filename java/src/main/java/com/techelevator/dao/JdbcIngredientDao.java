@@ -2,18 +2,63 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Ingredient;
 import com.techelevator.model.IngredientTypes;
+import com.techelevator.model.Recipe;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
+@Service
 public class JdbcIngredientDao implements IngredientDao
 {
     private JdbcTemplate jdbcTemplate;
     
     public JdbcIngredientDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    @Override
+    public boolean postAllIngredientsForRecipe(Recipe recipe)
+    {
+        boolean worked = true;
+        for (Ingredient i : recipe.getIngredients())
+        {
+            try
+            {
+                if(postIngredientForRecipe(i, recipe.getRecipeId()) == false)
+                {
+                    worked = false;
+                }
+            }
+            catch (Exception e)
+            {
+                System.err.println(e.getMessage());
+                return false;
+            }
+
+        }
+        return worked;
+    }
+    
+    @Override
+    public boolean postIngredientForRecipe(Ingredient ingredient, Long recipeId)
+    {
+        String sql = "INSERT INTO recipe_ingredient (recipe_recipe_id, ingredient_ingredient_id, amount, note) VALUES (?,?,?,?);";
+        
+        try {
+            jdbcTemplate.update(sql, recipeId, ingredient.getIngredientId(), ingredient.getAmount()
+                    , ingredient.getRecipeNote());
+        }
+        catch (DataAccessException e)
+        {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
     
     @Override

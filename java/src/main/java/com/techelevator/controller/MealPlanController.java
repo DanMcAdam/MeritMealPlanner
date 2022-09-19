@@ -1,6 +1,7 @@
 package com.techelevator.controller;
 
 
+import com.techelevator.dao.IngredientDao;
 import com.techelevator.dao.MealPlanDao;
 import com.techelevator.dao.RecipeDao;
 import com.techelevator.dao.UserDao;
@@ -23,12 +24,13 @@ public class MealPlanController {
     RecipeDao recipeDao;
     MealPlanDao mealPlanDao;
     UserDao userDao;
+    IngredientDao ingredientDao;
 
-
-    public MealPlanController(UserDao userDao, MealPlanDao mealPlanDao, RecipeDao recipeDao) {
+    public MealPlanController(UserDao userDao, MealPlanDao mealPlanDao, RecipeDao recipeDao, IngredientDao ingredientDao) {
         this.userDao = userDao;
         this.mealPlanDao = mealPlanDao;
         this.recipeDao = recipeDao;
+        this.ingredientDao = ingredientDao;
     }
 
     @RequestMapping(value = "/meal", method = RequestMethod.GET)
@@ -110,12 +112,16 @@ public class MealPlanController {
     //TODO: submit recipe ingredients with recipe
     //TODO: Pull recipe ingredients with /recipes/{id}
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
-    public boolean userSubmitRecipe(@RequestBody Recipe recipe, Principal principal){
-        System.out.println(recipe.toString());
-        System.out.println(principal.getName());
-        int creatorId = userDao.findIdByUsername(principal.getName());
-        recipe.setCreatorId(creatorId);
-        return recipeDao.createRecipe(recipe);
+    public boolean userSubmitRecipe(@RequestBody Recipe recipe){
+        //System.out.println(recipe.toString());
+        //System.out.println(principal.getName());
+        //int creatorId = userDao.findIdByUsername(principal.getName());
+        //recipe.setCreatorId(creatorId);
+        boolean worked = true;
+        recipe = recipeDao.createRecipe(recipe);
+        worked = ingredientDao.postAllIngredientsForRecipe(recipe)? worked : false;
+        return worked;
+
         
     }
 

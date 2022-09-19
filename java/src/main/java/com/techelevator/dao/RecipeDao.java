@@ -37,5 +37,5 @@ public interface RecipeDao
 
         public boolean deleteRecipe(String title, Long creatorId);
     
-    boolean createRecipe(Recipe recipe);
+    Recipe createRecipe(Recipe recipe);
 }

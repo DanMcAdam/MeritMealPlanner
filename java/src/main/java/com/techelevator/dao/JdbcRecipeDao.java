@@ -4,6 +4,8 @@ import com.techelevator.model.Ingredient;
 import com.techelevator.model.Recipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -146,7 +148,7 @@ public class JdbcRecipeDao implements RecipeDao
 
     //creates and store data on the recipe table
     //TODO: take ingredient do a recipe join submit
-    public boolean createRecipe(Recipe recipe) {
+    public Recipe createRecipe(Recipe recipe) {
 
         //making a query to the db in order to check title
         //String titleIsFound = "SELECT title FROM recipe WHERE title = ? AND creator_id = ? ";
@@ -165,17 +167,17 @@ public class JdbcRecipeDao implements RecipeDao
             recipe.setDateAdded(date);
             System.out.println(recipe);
             //query for items to be inserted in the recipe db
-            String sql = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, reference_link, picture_links, subheader) VALUES(?,?,?,?,?,?,?,?,?,?);";
+            String sql = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, reference_link, picture_links, subheader) VALUES(?,?,?,?,?,?,?,?,?,?) RETURNING recipe_id;";
 
             try {
-
+                //KeyHolder keyHolder = new GeneratedKeyHolder();
                 jdbcTemplate.update(sql, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
                         recipe.getInstructions(), recipe.isPrivate(), recipe.getReferenceLink(), recipe.getPictureLinks(), recipe.getSubHeader());
                 System.out.println("Success");
             } catch (DataAccessException e) {
-                return false;
+                System.err.println(e.getMessage());
             }
-            return true;
+            return recipe;
        /* }*/
     }
 
