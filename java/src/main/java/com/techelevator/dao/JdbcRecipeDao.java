@@ -154,15 +154,16 @@ public class JdbcRecipeDao implements RecipeDao
        //}
         /*else {*/
     
-            System.out.println(recipe);
+
             //gets the current date
             long millis = System.currentTimeMillis();
             java.sql.Date date = new java.sql.Date(millis);
             recipe.setDateAdded(date);
+            System.out.println(recipe);
             //query for items to be inserted in the recipe db
-            String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, subheader) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+            String insertMealPlan = "INSERT INTO recipe (creator_id, title, date_added, cooking_time, prep_time, instructions, private, picture_links, reference_link, subheader) VALUES(?,?,?,?,?,?,?,?,{?},?,?)";
             try {
-                jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                jdbcTemplate.update(insertMealPlan, recipe.getCreatorId(), recipe.getTitle(), "1999-01-01", recipe.getCookingTime(), recipe.getPrepTime(),
                         recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getSubHeader());
                 System.out.println("Success");
             } catch (DataAccessException e) {
@@ -210,7 +211,7 @@ public class JdbcRecipeDao implements RecipeDao
         //gets current date
         long millis=System.currentTimeMillis();
         java.sql.Date date=new java.sql.Date(millis);
-
+        
         //query to update db values on recipe table
         String updateRecipeSql = "UPDATE recipe SET title = ?, date_added = ?, cooking_time = ?, prep_time = ?, instructions =?, private = ?, " +
                 "picture_links = ?, reference_link = ?, subheader = ? WHERE recipe_id = ? AND creator_id = ?";

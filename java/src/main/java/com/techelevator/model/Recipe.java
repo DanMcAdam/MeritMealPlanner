@@ -14,6 +14,12 @@ public class Recipe
     private Date dateAdded;
     private int cookingTime;
     private int prepTime;
+    private String instructions;
+    private boolean isPrivate;
+    private String[] pictureLinks;
+    private String referenceLink;
+    private String subHeader;
+    private Ingredient[] ingredients;
     
     public Recipe()
     {
@@ -53,13 +59,6 @@ public class Recipe
         this.subHeader = subHeader;
         this.ingredients = ingredients;
     }
-    
-    private String instructions;
-    private boolean isPrivate;
-    private String[] pictureLinks;
-    private String referenceLink;
-    private String subHeader;
-    private Ingredient[] ingredients;
     
     public long getRecipeId()
     {

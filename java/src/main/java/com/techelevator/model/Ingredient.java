@@ -10,6 +10,20 @@ public class Ingredient
     private Measurement measurement;
     private String recipeNote;
     
+    @Override
+    public String toString()
+    {
+        return "Ingredient{" +
+                "ingredientId=" + ingredientId +
+                ", ingredientName='" + ingredientName + '\'' +
+                ", superCategory=" + superCategory +
+                ", ingredientTypes=" + ingredientTypes +
+                ", amount=" + amount +
+                ", measurement=" + measurement +
+                ", recipeNote='" + recipeNote + '\'' +
+                '}';
+    }
+    
     public Ingredient()
     {
     }

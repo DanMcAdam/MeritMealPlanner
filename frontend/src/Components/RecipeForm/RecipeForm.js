@@ -20,7 +20,7 @@ export default function RecipeForm() {
     const [newIngredient, setNewIngredient] = useState(
         ''
     )
-    const [prepTime, setPrepTime] = useState({
+    const [prepTimeHour, setPrepTime] = useState({
         prepHrs: '',
         prepMins: ''
     })
@@ -54,14 +54,14 @@ export default function RecipeForm() {
     const handleSubmit = (e) => {
         e.preventDefault()
         //translates cooktime and preptime to match single int representing minutes in database
-        const translatedCookTime = (cookTime.cookHrs * 60) + cookTime.cookMins;
-        const translatedPrepTime = (prepTime.prepHrs * 60) + prepTime.prepMins;
+        const cookingTime = (cookTime.cookHrs * 60) + cookTime.cookMins;
+        const prepTime = (prepTimeHour.prepHrs * 60) + prepTimeHour.prepMins;
         //sets up ingredient as ingredient object to match API model
         for (let i = 0; i < ingredients.length; i++)
         {
             ingredients[i] = {ingredientId: 1, ingredientName: 'ingredient', superCategory : 0,  ingredientTypes: 'Other', amount: 0, measurement : 'empty', recipeNote: ingredients[i].recipeNote}
         }
-        postData({recipeId: 1, creatorId: 1, title, date : '01-01-1999', translatedPrepTime, ingredients, instructions, isPrivate, pictureLinks, referenceLink, subHeader})
+        postData({recipeId: 1, creatorId: 1, title, dateAdded : '1999-01-01', cookingTime, prepTime, instructions, isPrivate, pictureLinks, referenceLink, subHeader, ingredients})
         resetForm()
     }
 
@@ -142,7 +142,7 @@ export default function RecipeForm() {
                                     name="prepHrs"
                                     placeholder="Hrs"
                                     min={0}
-                                    value={prepTime.prepHrs}
+                                    value={prepTimeHour.prepHrs}
                                     onChange={handlePrepChange}
                                 />
                             </div>
@@ -154,7 +154,7 @@ export default function RecipeForm() {
                                         name="prepMins"
                                         placeholder="Mins"
                                         min={0}
-                                        value={prepTime.prepMins}
+                                        value={prepTimeHour.prepMins}
                                         onChange={handlePrepChange}
                                     />
                                 </label>
