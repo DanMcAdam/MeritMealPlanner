@@ -113,7 +113,7 @@ public class MealPlanController {
     public boolean userSubmitRecipe(@RequestBody Recipe recipe, Principal principal){
         System.out.println(recipe.toString());
         System.out.println(principal.getName());
-        Long creatorId = Long.valueOf(userDao.findIdByUsername(principal.getName()));
+        int creatorId = userDao.findIdByUsername(principal.getName());
         recipe.setCreatorId(creatorId);
         return recipeDao.createRecipe(recipe);
         

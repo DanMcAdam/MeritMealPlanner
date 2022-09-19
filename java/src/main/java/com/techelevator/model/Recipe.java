@@ -9,7 +9,7 @@ public class Recipe
 {
 
     private long recipeId;
-    private long creatorId;
+    private int creatorId;
     private String title;
     private Date dateAdded;
     private int cookingTime;
@@ -44,7 +44,7 @@ public class Recipe
                 '}';
     }
     
-    public Recipe(long recipeId, long creatorId, String title, Date dateAdded, int cookingTime, int prepTime, String instructions, boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader, Ingredient[] ingredients)
+    public Recipe(long recipeId, int creatorId, String title, Date dateAdded, int cookingTime, int prepTime, String instructions, boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader, Ingredient[] ingredients)
     {
         this.recipeId = recipeId;
         this.creatorId = creatorId;
@@ -75,7 +75,7 @@ public class Recipe
         return creatorId;
     }
     
-    public void setCreatorId(long creatorId)
+    public void setCreatorId(int creatorId)
     {
         this.creatorId = creatorId;
     }

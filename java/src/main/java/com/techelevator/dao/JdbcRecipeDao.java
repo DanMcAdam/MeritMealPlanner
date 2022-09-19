@@ -124,7 +124,7 @@ public class JdbcRecipeDao implements RecipeDao
         try
         {
             recipe.setRecipeId(rs.getLong(1));
-            recipe.setCreatorId(rs.getLong(2));
+            recipe.setCreatorId(rs.getInt(2));
             recipe.setTitle(rs.getString(3));
             recipe.setDateAdded(rs.getDate(4));
             recipe.setCookingTime(rs.getInt(5));
