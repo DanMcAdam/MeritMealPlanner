@@ -14,9 +14,7 @@ export default function RecipeForm() {
 
     const [title, setTitle] = useState('')
     const [instructions, setInstructions] = useState('')
-    const [ingredients, setIngredients] = useState([{
-            ingredientId: null, ingredientName: '', superCategory : null,  ingredientTypes: null, amount: null, measurement : null, recipeNote: '',
-        }])
+    const [ingredients, setIngredients] = useState([{}])
     const [newIngredient, setNewIngredient] = useState(
         ''
     )
@@ -56,11 +54,18 @@ export default function RecipeForm() {
         //translates cooktime and preptime to match single int representing minutes in database
         const cookingTime = (cookTime.cookHrs * 60) + cookTime.cookMins;
         const prepTime = (prepTimeHour.prepHrs * 60) + prepTimeHour.prepMins;
-        //sets up ingredient as ingredient object to match API model
+        //sets up ingredient as ingredient object to match API model, removes ingredient if ingredient note is empty. 
         for (let i = 0; i < ingredients.length; i++)
         {
+            if (ingredients[i].recipeNote == null)
+            {
+                ingredients.splice(i, 1);
+                continue;
+            }
             ingredients[i] = {ingredientId: 1, ingredientName: 'ingredient', superCategory : 0,  ingredientTypes: 'Other', amount: 0, measurement : 'empty', recipeNote: ingredients[i].recipeNote}
         }
+        //Ingredients are stored in the reverse of the order they're submitted, this should fix that. 
+        ingredients.reverse();
         postData({recipeId: 1, creatorId: 1, title, dateAdded : '1999-01-01', cookingTime, prepTime, instructions, isPrivate, pictureLinks, referenceLink, subHeader, ingredients})
         resetForm()
     }
