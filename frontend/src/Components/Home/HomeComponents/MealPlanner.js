@@ -2,6 +2,7 @@ import React, {useState, useEffect, useMemo} from "react";
 import MealPlannerService from "./MealPlannerService";
 import './planner.css'
 import { nanoid } from 'nanoid'
+import '../../../static/CSS/planner.css'
 
 export default function Planner({}){
 
@@ -127,29 +128,40 @@ export default function Planner({}){
     )}), [recipesInPlannerList, plannerDBList]);
 
     return(
-        <div>
-            <div className="planner-overall-container">
-                <div className="search">
-                    <div className="searchInput">
-                        <input onChange = {handleFilter}
-                            type="text" 
-                            value={wordEntered}
-                            placeholder="Enter a recipe to search ..." /><button id = "clear-button" onClick={clearInput}>X</button>
-                    </div>
-                
-                    <div className="data-result">
-                    {recipesSearchList}
+        <>
+                <div class="color"></div>
+                <div class="color"></div>
+                <div class="color"></div>
+                <div class="box">
+                    <div class="container">
+                        <div class="form">
+                                <div>
+                                    <div className="planner-overall-container">
+                                        <div className="search">
+                                            <div className="searchInput">
+                                                <input onChange = {handleFilter}
+                                                    type="text" 
+                                                    value={wordEntered}
+                                                    placeholder="Enter a recipe to search ..." /><button id = "clear-button" onClick={clearInput}>X</button>
+                                            </div>
+                                        
+                                            <div className="data-result">
+                                            {recipesSearchList}
+                                            </div>
+                                        </div>
+
+                                        <div className="planner-overall">
+                                            <h1 className="planner-pagetitle">Planner</h1>
+                                            <div className="planner-link-container">
+                                                {displayrecipesInPlannerList}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
                     </div>
                 </div>
-
-                <div className="planner-overall">
-                    <h1 className="planner-pagetitle">Planner</h1>
-                    <div className="planner-link-container">
-                        {displayrecipesInPlannerList}
-                    </div>
-                </div>
-
             </div>
-        </div>
+            </>
     )
 };
