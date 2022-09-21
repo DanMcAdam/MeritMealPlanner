@@ -55,9 +55,11 @@ class Login extends Component {
                     <div class="color"></div>
                     <div class="color"></div>
                     <div class="color"></div>
-                    <div>
-                        <h1>Please Sign In</h1>
-                        <label class="sr-only">Username</label>
+                    <div class="box">
+                        <div class="container">
+                            <div class="form">
+                                <h1>Please Sign In</h1>
+                                <label class="sr-only">Username</label>
                         <input
                             type="text"
                             id="username"
@@ -81,6 +83,12 @@ class Login extends Component {
                         />
                         <Link to="/register">Need an account?</Link>
                         <button type="submit" onClick={this.handleLogin}>Sign in</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        
+                        
                     </div>
                 </section>
             </body>

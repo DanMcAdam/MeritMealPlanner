@@ -116,6 +116,9 @@ export default function RecipeForm() {
 
     return (
 
+        <div class="recipe-box">
+                        <div class="recipe-container">
+                            <div class="recipe-form">
         <form className="recipeform" onSubmit={handleSubmit}>
 
             <h2 id="recipeform-heading">New Recipe</h2>
@@ -260,6 +263,9 @@ export default function RecipeForm() {
             </div>
 
         </form>
+        </div>
+        </div>
+        </div>
     )
 }
 

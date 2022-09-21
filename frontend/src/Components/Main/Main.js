@@ -52,9 +52,9 @@ class Main extends Component {
             <div>
 
                 
-
-                <header>
-
+    <div className='box'>
+                <header class="header-container">
+                    
 
                     <img
                         src=".././LogoIcon-Small.png"
@@ -77,9 +77,9 @@ class Main extends Component {
                         <div className='header-links'>
 
                             <ul>
-                            <li>Welcome {jwt_decode(this.props.token.token).sub}</li>
+                            <li><p>Welcome {jwt_decode(this.props.token.token).sub}</p></li>
                             <li><Link to='/home'>Home</Link></li>
-                            <li><Link to='/recipes'>Recipes</Link></li>
+                            {/* <li><Link to='/recipes'>Recipes</Link></li> */}
                             <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
                             
                             
@@ -102,15 +102,14 @@ class Main extends Component {
                         </div>
                     }
 
-                    {/* </div> */}
+                    
                 </header>
-
+</div>
                 <section>
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
-
-            
+                
 
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
@@ -131,7 +130,7 @@ class Main extends Component {
                     <Redirect to='/login' /> */}
                 </Switch>
 
-                </section>
+            </section>
 
             </div>
         )
