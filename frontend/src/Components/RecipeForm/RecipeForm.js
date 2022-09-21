@@ -60,6 +60,7 @@ export default function RecipeForm() {
             if (ingredients[i].recipeNote == null)
             {
                 ingredients.splice(i, 1);
+                i--;
                 continue;
             }
             ingredients[i] = {ingredientId: 1, ingredientName: 'ingredient', superCategory : 0,  ingredientTypes: 'Other', amount: 0, measurement : 'empty', recipeNote: ingredients[i].recipeNote}

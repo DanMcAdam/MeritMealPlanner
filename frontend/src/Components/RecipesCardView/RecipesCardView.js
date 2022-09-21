@@ -9,7 +9,7 @@ export default function RecipesCardView({ recipes }) {
         console.log(id)
         axios({
             method: 'DELETE',
-            url: 'http://localhost:3000/recipes/' + id
+            url: 'http://localhost:8081/recipes/' + id
         });
     }
 
