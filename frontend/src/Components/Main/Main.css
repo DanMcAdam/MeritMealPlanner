@@ -67,9 +67,6 @@ header {
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-body {
-    overflow: hidden;
-}
 section{
     display: flex;
     justify-content: center;
