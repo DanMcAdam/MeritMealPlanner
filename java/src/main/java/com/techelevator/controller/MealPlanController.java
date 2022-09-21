@@ -140,7 +140,7 @@ public class MealPlanController {
         return mealPlanDao.createPlan(mealPlan);
     }
 
-    @RequestMapping(value = "/recipe/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/recipe/{id}", method = RequestMethod.DELETE)
     public Boolean deleteRecipeById (@RequestBody Long id, Principal principal)
     {
         int userId = userDao.findIdByUsername(principal.getName());
