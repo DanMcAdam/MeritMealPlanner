@@ -1,18 +1,12 @@
 package com.techelevator.dao;
 
-import com.techelevator.model.Ingredient;
 import com.techelevator.model.Recipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import javax.sql.DataSource;
-import javax.sql.rowset.JdbcRowSet;
-import java.security.Principal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +28,7 @@ public class JdbcRecipeDao implements RecipeDao
         return null;
     }
     
-    
+    @Override
     public List<Recipe> getRecipeListFromUser(int creatorId){
 
         List<Recipe> recipes = new ArrayList<>();
@@ -254,15 +248,28 @@ public class JdbcRecipeDao implements RecipeDao
 
 */
 
+    @Override
+    public boolean checkRecipeOwnership(Long recipeId, int creatorId)
+    {
+        String sql = "SELECT * FROM recipe WHERE recipe_id = ? AND creator_id = ?;";
+        try{
+            SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, recipeId, creatorId);
+            return rowSet.next();
+        }
+        catch (DataAccessException e){
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
 
     @Override
     //deletes values on recipe table
-    public boolean deleteRecipe(String title, Long creatorId){
+    public boolean deleteRecipe(Long recipeId, int creatorId){
 
         //query for deleting item
-        String deleteRecipeSql = "DELETE FROM recipe WHERE title = ? AND creator_id = ? ";
+        String deleteRecipeSql = "DELETE FROM recipe WHERE recipe_id = ? AND creator_id = ? ";
         try{
-            jdbcTemplate.update(deleteRecipeSql, title,creatorId);
+            jdbcTemplate.update(deleteRecipeSql, recipeId, creatorId);
         }catch(DataAccessException e){
             System.err.println(e.getMessage());
             return false;

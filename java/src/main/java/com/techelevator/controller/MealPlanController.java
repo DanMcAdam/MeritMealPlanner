@@ -140,67 +140,18 @@ public class MealPlanController {
         return mealPlanDao.createPlan(mealPlan);
     }
 
-
-
-
-/*
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-        boolean print() {
-        Long recipeId = Long.valueOf(1);
-        Long creatorId = Long.valueOf(1);
-        String title = "Lasgna";
-        Long cookingTime = Long.valueOf(10);
-        Long prepTime = Long.valueOf(11);
-        String instructions = "various steps to follow";
-        boolean isPrivate = true;
-        String pictureLinks[] = {"link 1", "link 2"};
-        String referenceLink = "reference link";
-        String videoLink = "video Link";
-
-
-             try {
-           return recipeDao.updateRecipe(recipeId,creatorId,title,cookingTime,prepTime,instructions,
-                   isPrivate,pictureLinks,referenceLink,videoLink);
-                   }
-
-
-
-        //return recipeDao.createRecipe(creatorId, title, cookingTime, prepTime,ingredient[], instructions,
-              //  isPrivate, pictureLinks, referenceLink, subHeader);
-
-
-        Long userToDelete = Long.valueOf(1);
-        Long recipeIdToDelete = Long.valueOf(9);
-
-
-        return recipeDao.deleteRecipe(recipeIdToDelete,userToDelete);
-
-
-    }
-
-*/
-    /*
-        @RequestMapping(value = "/meal", method = RequestMethod.GET)
-        boolean printMeal (@RequestBody Recipe recipe, Principal principal){
-
-        return recipeDao.createRecipe(recipe);
-
-
+    @RequestMapping(value = "/recipe/delete/{id}", method = RequestMethod.DELETE)
+    public Boolean deleteRecipeById (@RequestBody Long id, Principal principal)
+    {
+        int userId = userDao.findIdByUsername(principal.getName());
+        boolean success = false;
+        if (recipeDao.checkRecipeOwnership(id, userId))
+        {
+            success = ingredientDao.deleteAllIngredientsFromRecipe(id)?true : false;
+            success = recipeDao.deleteRecipe(id, userId)?success : false;
         }
-
- */
-
-/*
-    @RequestMapping(value = "/recipe", method = RequestMethod.POST)
-    boolean GetRecipeFromFrontEnd (@RequestBody Recipe recipe, Principal principal){
-
-        return recipeDao.createRecipe(recipe);
-
-
+        return success;
     }
-
-
- */
 
 
 

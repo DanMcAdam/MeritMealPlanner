@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.Ingredient;
-import com.techelevator.model.IngredientTypes;
 import com.techelevator.model.Recipe;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,6 +18,22 @@ public class JdbcIngredientDao implements IngredientDao
     
     public JdbcIngredientDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+    
+    @Override
+    public boolean deleteAllIngredientsFromRecipe(Long recipeId)
+    {
+        String sql = "DELETE * FROM recipe_ingredient WHERE recipe_recipe_id = ?;";
+        try
+        {
+            jdbcTemplate.update(sql, recipeId);
+            return true;
+        }
+        catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
     
     @Override

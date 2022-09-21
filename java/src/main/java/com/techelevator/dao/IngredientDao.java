@@ -6,6 +6,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 public interface IngredientDao
 {
+    boolean deleteAllIngredientsFromRecipe(Long recipeId);
+    
     boolean postAllIngredientsForRecipe(Recipe recipe);
     
     boolean postIngredientForRecipe(Ingredient ingredient, Long recipeId);
