@@ -13,46 +13,50 @@ import org.springframework.stereotype.Service;
 import com.techelevator.model.MealPlan;
 
 @Service
-public class JdbcMealPlanDao implements MealPlanDao{
-
-     private JdbcTemplate jdbcTemplate;
-
-     public JdbcMealPlanDao(JdbcTemplate jdbcTemplate) {
+public class JdbcMealPlanDao implements MealPlanDao
+{
+    
+    private JdbcTemplate jdbcTemplate;
+    
+    public JdbcMealPlanDao(JdbcTemplate jdbcTemplate)
+    {
         this.jdbcTemplate = jdbcTemplate;
     }
     
-
+    
     @Override
-    public List<MealPlan> findAllMealPlan(Long ownerId) {
-         String sql = "SELECT * FROM meal_plan WHERE owner_id = ?;";
-         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, ownerId);
-         
-         List<MealPlan> mealPlanList = new ArrayList<>();
-         try
-         {
-             while (rowSet.next())
-             {
-                 mealPlanList.add(mapRowToMealPlan(rowSet));
-             }
-         }
-         catch (Exception e)
-         {
-             System.err.println(e.getMessage());
-         }
-         return mealPlanList;
+    public List<MealPlan> findAllMealPlan(Long ownerId)
+    {
+        String sql = "SELECT * FROM meal_plan WHERE owner_id = ?;";
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, ownerId);
+        
+        List<MealPlan> mealPlanList = new ArrayList<>();
+        try
+        {
+            while (rowSet.next())
+            {
+                mealPlanList.add(mapRowToMealPlan(rowSet));
+            }
+        } catch (Exception e)
+        {
+            System.err.println(e.getMessage());
+        }
+        return mealPlanList;
     }
-
+    
     @Override
-    public int getPlanIdByOwnerId(Long ownerId) {
-
-
-       return jdbcTemplate.queryForObject(
-                    "SELECT * FROM meal_plan WHERE meal_plan.owner_id = ?", int.class, ownerId);
-       //need to get a array of all plans with the owner
+    public int getPlanIdByOwnerId(Long ownerId)
+    {
+        
+        
+        return jdbcTemplate.queryForObject(
+                "SELECT * FROM meal_plan WHERE meal_plan.owner_id = ?", int.class, ownerId);
+        //need to get a array of all plans with the owner
     }
-
+    
     @Override
-    public int getOwnerId(Long ownerId) {
+    public int getOwnerId(Long ownerId)
+    {
         return jdbcTemplate.queryForObject("SELECT owner_id FROM meal_plan WHERE owner_id = ?", int.class, ownerId);
     }
     
@@ -70,8 +74,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
             {
                 mealPlanDayRecipeList.add(mapRowToMealPlanDayRecipe(rowSet));
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             throw new Exception("Error querying for meal plan recipes by day");
         }
@@ -92,14 +95,14 @@ public class JdbcMealPlanDao implements MealPlanDao{
             {
                 mealPlanDayList.add(mapRowToMealPlanDay(rowSet));
             }
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             throw new Exception("Trouble querying meal plan days");
         }
         MealPlanDay[] mealPlanDayArr = new MealPlanDay[mealPlanDayList.size()];
         return mealPlanDayList.toArray(mealPlanDayArr);
     }
+    
     @Override
     public MealPlan mapRowToMealPlan(SqlRowSet rs) throws Exception
     {
@@ -112,8 +115,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
             MealPlanDay[] mealPlanDays = findAllDayInMealPlan(mealPlan.getPlanId());
             mealPlan.setMealPlanDays(mealPlanDays);
             return mealPlan;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             throw new Exception("Error mapping mealplan");
         }
@@ -131,8 +133,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
             MealPlanDayRecipe[] mealPlanDayRecipe = findAllRecipesInMealPlanDay(mealPlanDay.getDayId());
             mealPlanDay.setMealPlanDayRecipes(mealPlanDayRecipe);
             return mealPlanDay;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             throw new Exception("Error mapping meal plan days");
         }
@@ -142,39 +143,43 @@ public class JdbcMealPlanDao implements MealPlanDao{
     
     MealPlanDayRecipe mapRowToMealPlanDayRecipe(SqlRowSet rs) throws Exception
     {
-         MealPlanDayRecipe mealPlanDayRecipe = new MealPlanDayRecipe();
-         
-         try
-         {
-             mealPlanDayRecipe.setMealPlanDayId(rs.getLong("meal_plan_day_day_id"));
-             mealPlanDayRecipe.setRecipeId(rs.getLong("recipe_recipe_id"));
-             mealPlanDayRecipe.setHeader(rs.getString("header"));
-             
-             return mealPlanDayRecipe;
-         }
-         catch (Exception e)
-         {
-             throw new Exception("Error mapping meal plan day recipes");
-         }
+        MealPlanDayRecipe mealPlanDayRecipe = new MealPlanDayRecipe();
+        
+        try
+        {
+            mealPlanDayRecipe.setMealPlanDayId(rs.getLong("meal_plan_day_day_id"));
+            mealPlanDayRecipe.setRecipeId(rs.getLong("recipe_recipe_id"));
+            mealPlanDayRecipe.setHeader(rs.getString("header"));
+            
+            return mealPlanDayRecipe;
+        } catch (Exception e)
+        {
+            throw new Exception("Error mapping meal plan day recipes");
+        }
     }
     
     @Override
-    public MealPlan findByTitle(String title) {
+    public MealPlan findByTitle(String title)
+    {
         return null;
     }
-
+    
     @Override
-    public int findPlanIdByTitle(String title) {
+    public int findPlanIdByTitle(String title)
+    {
         return 0;
     }
     
     
     @Override
-    public boolean createPlan(MealPlan mealPlan) {
+    public boolean createPlan(MealPlan mealPlan)
+    {
         String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?, ?) RETURNING  plan_id;";
-        try{
+        try
+        {
             mealPlan.setPlanId(jdbcTemplate.queryForObject(insertMealPlan, Long.class, mealPlan.getOwnerId(), mealPlan.getTitle()));
-        }catch(DataAccessException e){
+        } catch (DataAccessException e)
+        {
             System.err.println(e.getMessage());
             return false;
         }
@@ -185,14 +190,16 @@ public class JdbcMealPlanDao implements MealPlanDao{
         }
         return true;
     }
-
+    
     @Override
     public boolean createPlanDay(MealPlanDay mealPlanDay)
     {
         String sql = "INSERT INTO meal_plan_day (plan_id, day_in_sequence) VALUES(?, ?) RETURNING day_id;";
-        try{
+        try
+        {
             mealPlanDay.setDayId(jdbcTemplate.queryForObject(sql, Long.class, mealPlanDay.getPlanId(), mealPlanDay.getDayInSequence()));
-        }catch (Exception e){
+        } catch (Exception e)
+        {
             System.err.println(e.getMessage());
             return false;
         }
@@ -211,8 +218,8 @@ public class JdbcMealPlanDao implements MealPlanDao{
         try
         {
             jdbcTemplate.update(sql, mealPlanDayRecipe.getMealPlanDayId(), mealPlanDayRecipe.getRecipeId(), mealPlanDayRecipe.getHeader());
-        }
-        catch (Exception e){
+        } catch (Exception e)
+        {
             System.err.println(e.getMessage());
             return false;
         }
@@ -221,38 +228,58 @@ public class JdbcMealPlanDao implements MealPlanDao{
     
     @Override
     //The following has not been tested.
-    public boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle){
-
+    public boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle)
+    {
+        
         String updateMealPlan = "UPDATE meal_plan SET title = ? WHERE plan_id = ? AND owner_id = ?";
-        try{
-            jdbcTemplate.update(updateMealPlan, newTitle, planIdToBeChanged,ownerId);
-        }catch(DataAccessException e){
+        try
+        {
+            jdbcTemplate.update(updateMealPlan, newTitle, planIdToBeChanged, ownerId);
+        } catch (DataAccessException e)
+        {
             return false;
         }
         return true;
-
+        
     }
+    
     @Override
-    public boolean deletePlan(Long planId, Long ownerId){
-
-        String deleteMealPlan = "DELETE FROM meal_plan WHERE plan_id = ? AND owner_id = ? ";
-        try{
-            jdbcTemplate.update(deleteMealPlan, planId,ownerId);
-        }catch(DataAccessException e){
+    public boolean deletePlan(Long planId, int ownerId)
+    {
+        List<Long> dayIds = new ArrayList<>();
+        String findMealPlanDays = "SELECT day_id FROM meal_plan_day WHERE plan_id = ?;";
+        String deleteMealPlan = "DELETE * FROM meal_plan WHERE plan_id = ? AND owner_id = ?;";
+        String deleteMealPlanDays = "DELETE * FROM meal_plan_day WHERE plan_id = ?;";
+        String deleteMealPlanDayRecipe = "DELETE * FROM day_recipe WHERE meal_plan_day_day_id = ?;";
+        String checkOwnership = "SELECT * FROM meal_plan WHERE plan_id = ? AND owner_id = ?;";
+        try
+        {
+            SqlRowSet ownershipCheck = jdbcTemplate.queryForRowSet(checkOwnership, planId, ownerId);
+            if (ownershipCheck.next())
+            {
+                SqlRowSet findDayRow = jdbcTemplate.queryForRowSet(findMealPlanDays, planId);
+                while (findDayRow.next())
+                {
+                    dayIds.add(findDayRow.getLong("day_id"));
+                }
+                for (Long dayId : dayIds)
+                {
+                    jdbcTemplate.update(deleteMealPlanDayRecipe, dayId);
+                }
+                jdbcTemplate.update(deleteMealPlanDays, planId);
+                jdbcTemplate.update(deleteMealPlan, planId, ownerId);
+            }
+            else return false;
+        } catch (DataAccessException e)
+        {
+            System.err.println(e.getMessage());
             return false;
         }
         return true;
-
+        
     }
-
-
-
-
-
-
-
-
-
+    
+    
 }
 
 
