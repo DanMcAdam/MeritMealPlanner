@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,6 +43,11 @@ public class MealPlanController {
 
     }
 
+    @RequestMapping(value = "/search/{searchString}", method = RequestMethod.GET)
+    List<Recipe> searchForRecipes(@PathVariable String searchString)
+    {
+        return recipeDao.getAllRecipeByName(searchString);
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/create", method = RequestMethod.POST)

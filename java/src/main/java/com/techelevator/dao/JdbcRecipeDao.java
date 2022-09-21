@@ -103,7 +103,7 @@ public class JdbcRecipeDao implements RecipeDao
 
         try
         {
-            if(rowSet.next())
+            while(rowSet.next())
             {
                 recipesNames.add(mapRowToRecipe(rowSet));
             }
@@ -113,8 +113,6 @@ public class JdbcRecipeDao implements RecipeDao
             System.err.println(e.getMessage());;
         }
         return recipesNames;
-
-
     }
 
 
