@@ -35,5 +35,5 @@ public interface MealPlanDao {
     //The following has not been tested.
     boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle);
     
-    boolean deletePlan(Long planId, Long ownerId);
+    boolean deletePlan(Long planId, int ownerId);
 }
