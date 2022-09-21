@@ -20,10 +20,26 @@ public class JdbcMealPlanDao implements MealPlanDao{
      public JdbcMealPlanDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    
 
     @Override
-    public List<MealPlan> findAllMealPlan() {
-        return null;
+    public List<MealPlan> findAllMealPlan(Long ownerId) {
+         String sql = "SELECT * FROM meal_plan WHERE owner_id = ?;";
+         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, ownerId);
+         
+         List<MealPlan> mealPlanList = new ArrayList<>();
+         try
+         {
+             while (rowSet.next())
+             {
+                 mealPlanList.add(mapRowToMealPlan(rowSet));
+             }
+         }
+         catch (Exception e)
+         {
+             System.err.println(e.getMessage());
+         }
+         return mealPlanList;
     }
 
     @Override
@@ -111,7 +127,7 @@ public class JdbcMealPlanDao implements MealPlanDao{
         {
             mealPlanDay.setDayId(rs.getLong("day_id"));
             mealPlanDay.setPlanId(rs.getLong("plan_id"));
-            mealPlanDay.setDayInSequence(rs.getInt("day_in_sequence"));
+            mealPlanDay.setDayInSequence(rs.getDate("day_in_sequence"));
             MealPlanDayRecipe[] mealPlanDayRecipe = findAllRecipesInMealPlanDay(mealPlanDay.getDayId());
             mealPlanDay.setMealPlanDayRecipes(mealPlanDayRecipe);
             return mealPlanDay;
@@ -151,19 +167,58 @@ public class JdbcMealPlanDao implements MealPlanDao{
     public int findPlanIdByTitle(String title) {
         return 0;
     }
-
+    
+    
     @Override
-    public boolean createPlan(Long ownerId, String title) {
-
-        String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?, ?)";
+    public boolean createPlan(MealPlan mealPlan) {
+        String insertMealPlan = "INSERT INTO meal_plan (owner_id, title) VALUES(?, ?) RETURNING  plan_id;";
         try{
-            jdbcTemplate.update(insertMealPlan, ownerId,title);
+            mealPlan.setPlanId(jdbcTemplate.queryForObject(insertMealPlan, Long.class, mealPlan.getOwnerId(), mealPlan.getTitle()));
         }catch(DataAccessException e){
+            System.err.println(e.getMessage());
             return false;
+        }
+        for (MealPlanDay mealPlanDay : mealPlan.getMealPlanDays())
+        {
+            mealPlanDay.setPlanId(mealPlan.getPlanId());
+            createPlanDay(mealPlanDay);
         }
         return true;
     }
 
+    @Override
+    public boolean createPlanDay(MealPlanDay mealPlanDay)
+    {
+        String sql = "INSERT INTO meal_plan_day (plan_id, day_in_sequence) VALUES(?, ?) RETURNING day_id;";
+        try{
+            mealPlanDay.setDayId(jdbcTemplate.queryForObject(sql, Long.class, mealPlanDay.getPlanId(), mealPlanDay.getDayInSequence()));
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+            return false;
+        }
+        for (MealPlanDayRecipe mealPlanDayRecipe : mealPlanDay.getMealPlanDayRecipes())
+        {
+            mealPlanDayRecipe.setMealPlanDayId(mealPlanDay.getDayId());
+            createMealPlanDayRecipe(mealPlanDayRecipe);
+        }
+        return true;
+    }
+    
+    @Override
+    public boolean createMealPlanDayRecipe(MealPlanDayRecipe mealPlanDayRecipe)
+    {
+        String sql = "INSERT INTO day_recipe (meal_plan_day_day_id, recipe_recipe_id, header) VALUES(?, ?, ?);";
+        try
+        {
+            jdbcTemplate.update(sql, mealPlanDayRecipe.getMealPlanDayId(), mealPlanDayRecipe.getRecipeId(), mealPlanDayRecipe.getHeader());
+        }
+        catch (Exception e){
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    
     @Override
     //The following has not been tested.
     public boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle){

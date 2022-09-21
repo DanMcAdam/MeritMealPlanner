@@ -15,9 +15,13 @@ public class MealPlan {
     private String title;
     private MealPlanDay[] mealPlanDays;
     
-    //public MealPlan(Long planId, Long ownerId, String title, MealPlanDay[] mealPlanDays)
+    public MealPlan()
     {
-        this.planId = planId;
+    
+    }
+    
+    public MealPlan(Long ownerId, String title, MealPlanDay[] mealPlanDays)
+    {
         this.ownerId = ownerId;
         this.title = title;
         this.mealPlanDays = mealPlanDays;

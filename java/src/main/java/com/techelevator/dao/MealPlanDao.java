@@ -9,9 +9,9 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import java.util.List;
 
 public interface MealPlanDao {
-
-    List<MealPlan> findAllMealPlan();
-
+    
+    List<MealPlan> findAllMealPlan(Long ownerId);
+    
     int getPlanIdByOwnerId(Long ownerId);
 
     int getOwnerId(Long ownerId);
@@ -25,8 +25,12 @@ public interface MealPlanDao {
     MealPlan findByTitle(String title);
 
     int findPlanIdByTitle(String title);
-
-    boolean createPlan(Long ownerId, String title);
+    
+    boolean createPlan(MealPlan mealPlan);
+    
+    boolean createPlanDay(MealPlanDay mealPlanDay);
+    
+    boolean createMealPlanDayRecipe(MealPlanDayRecipe mealPlanDayRecipe);
     
     //The following has not been tested.
     boolean updatePlan(Long planIdToBeChanged, Long ownerId, String newTitle);

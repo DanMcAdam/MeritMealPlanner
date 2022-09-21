@@ -35,7 +35,7 @@ public class JdbcRecipeDao implements RecipeDao
     }
     
     
-    public List<Recipe> getRecipeListFromUser(int creatorId) throws Exception{
+    public List<Recipe> getRecipeListFromUser(int creatorId){
 
         List<Recipe> recipes = new ArrayList<>();
 
@@ -48,7 +48,7 @@ public class JdbcRecipeDao implements RecipeDao
     }
 
 
-    public List<Recipe> getAllRecipeList() throws Exception{
+    public List<Recipe> getAllRecipeList(){
 
         List<Recipe> recipeList = new ArrayList<>();
 
@@ -65,7 +65,7 @@ public class JdbcRecipeDao implements RecipeDao
         }
         catch (Exception e)
         {
-            throw new Exception("Error querying for recipe by name");
+            System.err.println(e.getMessage());
         }
         return recipeList;
 
@@ -73,7 +73,7 @@ public class JdbcRecipeDao implements RecipeDao
 
 
     @Override
-    public Recipe getRecipeById(Long recipeId) throws Exception
+    public Recipe getRecipeById(Long recipeId)
     {
         String sql = "SELECT * FROM recipe WHERE recipe_id = ?;";
     
@@ -88,12 +88,12 @@ public class JdbcRecipeDao implements RecipeDao
         }
         catch (Exception e)
         {
-            throw new Exception("Error querying for recipe by ID");
+            System.err.println(e.getMessage());
         }
         return null;
     }
 
-    public List<Recipe> getAllRecipeByName(String namesOfRecipe) throws Exception {
+    public List<Recipe> getAllRecipeByName(String namesOfRecipe) {
 
         String sql = "SELECT * FROM recipe WHERE title ILIKE ? ";
 
@@ -110,7 +110,7 @@ public class JdbcRecipeDao implements RecipeDao
         }
         catch (Exception e)
         {
-            throw new Exception("Error querying for recipe by name");
+            System.err.println(e.getMessage());;
         }
         return recipesNames;
 
@@ -120,7 +120,7 @@ public class JdbcRecipeDao implements RecipeDao
 
     
 
-    public Recipe mapRowToRecipe(SqlRowSet rs) throws Exception
+    public Recipe mapRowToRecipe(SqlRowSet rs)
     {
         Recipe recipe = new Recipe();
         try
@@ -140,7 +140,7 @@ public class JdbcRecipeDao implements RecipeDao
         }
         catch (Exception e)
         {
-            throw new Exception(e.getMessage());
+            System.err.println(e.getMessage());
         }
         
         return recipe;
@@ -266,6 +266,7 @@ public class JdbcRecipeDao implements RecipeDao
         try{
             jdbcTemplate.update(deleteRecipeSql, title,creatorId);
         }catch(DataAccessException e){
+            System.err.println(e.getMessage());
             return false;
         }
         return true;

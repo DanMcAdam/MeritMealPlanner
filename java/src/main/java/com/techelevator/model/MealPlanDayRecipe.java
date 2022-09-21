@@ -6,11 +6,25 @@ public class MealPlanDayRecipe
     private long recipeId;
     private String header;
     private Recipe recipe;
-    //public MealPlanDayRecipe(long mealPlanDayId, long recipeId, int header)
+    
+    
+    
+    public MealPlanDayRecipe(long recipeId, String header)
+    {
+        this.recipeId = recipeId;
+        this.header = header;
+    }
+    
+    public MealPlanDayRecipe()
+    {
+    }
+    
+    public MealPlanDayRecipe(long mealPlanDayId, long recipeId, String header, Recipe recipe)
     {
         this.mealPlanDayId = mealPlanDayId;
         this.recipeId = recipeId;
         this.header = header;
+        this.recipe = recipe;
     }
     
     public long getMealPlanDayId()

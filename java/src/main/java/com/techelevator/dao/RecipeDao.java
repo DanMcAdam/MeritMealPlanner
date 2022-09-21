@@ -17,10 +17,10 @@ public interface RecipeDao
 
 
 
-        public List<Recipe> getRecipeListFromUser(int creatorId) throws Exception;
-        public List<Recipe> getAllRecipeByName(String namesOfRecipe) throws Exception;
-        public List<Recipe> getAllRecipeList() throws Exception;
-        public Recipe getRecipeById(Long recipeId) throws Exception;
+        public List<Recipe> getRecipeListFromUser(int creatorId);
+        public List<Recipe> getAllRecipeByName(String namesOfRecipe);
+        public List<Recipe> getAllRecipeList();
+        public Recipe getRecipeById(Long recipeId);
 
         //public Recipe getRecipeByName(String namesOfRecipe) throws Exception;
 

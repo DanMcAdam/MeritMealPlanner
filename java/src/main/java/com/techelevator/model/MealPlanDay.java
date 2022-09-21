@@ -1,13 +1,24 @@
 package com.techelevator.model;
 
 import javax.validation.constraints.NotEmpty;
+import java.sql.Date;
 
 public class MealPlanDay
 {
     private long dayId;
     private long planId;
     @NotEmpty (message="please enter which day in the mealplan this day is supposed to represent")
-    private int dayInSequence;
+    private Date dayInSequence;
+    
+    public MealPlanDay()
+    {
+    }
+    
+    public MealPlanDay(Date dayInSequence, MealPlanDayRecipe[] mealPlanDayRecipes)
+    {
+        this.dayInSequence = dayInSequence;
+        this.mealPlanDayRecipes = mealPlanDayRecipes;
+    }
     
     private MealPlanDayRecipe[] mealPlanDayRecipes;
     
@@ -31,12 +42,12 @@ public class MealPlanDay
         this.planId = planId;
     }
     
-    public int getDayInSequence()
+    public Date getDayInSequence()
     {
         return dayInSequence;
     }
     
-    public void setDayInSequence(int dayInSequence)
+    public void setDayInSequence(Date dayInSequence)
     {
         this.dayInSequence = dayInSequence;
     }

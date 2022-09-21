@@ -72,28 +72,14 @@ public class MealPlanController {
 
 
     //Get method the Recipe the user has on the DB.
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/UserRecipes", method = RequestMethod.GET)
     public List<Recipe> getListOfRecipes(Principal principal) throws Exception{
         int userId = userDao.findIdByUsername(principal.getName());
         return recipeDao.getRecipeListFromUser(userId);
 
     }
-/*
-    @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/Form", method = RequestMethod.GET)
-    public void userChooseToUpdateRecipe(@RequestBody Recipe recipe) {
-        //recipeDao.updateRecipe(recipe);
-
-    }
-
-
-    @RequestMapping(value = "/Form", method = RequestMethod.GET)
-    public boolean userChooseToDeleteRecipe(@RequestBody String title, Long creatorId) {
-        return recipeDao.deleteRecipe(title, creatorId);
-
-    }
-
-*/
+    
+    
     @RequestMapping(value = "/recipes", method = RequestMethod.GET)
     public List<Recipe> displayAllRecipes() throws Exception {
          return recipeDao.getAllRecipeList();
@@ -111,8 +97,6 @@ public class MealPlanController {
     //Creates recipe when the values are passed
     //TODO: get principle working to populate recipe creator id
     //TODO: Cleanup commented out code and test stuff
-    //TODO: submit recipe ingredients with recipe
-    //TODO: Pull recipe ingredients with /recipes/{id}
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
     public boolean userSubmitRecipe(@RequestBody Recipe recipe){
         //System.out.println(recipe.toString());
@@ -127,7 +111,28 @@ public class MealPlanController {
         
     }
 
-
+    @RequestMapping(value = "/MealPlans", method = RequestMethod.GET)
+    public List<MealPlan> displayAllUserMealPlans(Long userId)
+    {
+        List<MealPlan> mealPlanList = mealPlanDao.findAllMealPlan(userId);
+        for (MealPlan mealPlan : mealPlanList)
+        {
+            for (MealPlanDay mealPlanDay : mealPlan.getMealPlanDays())
+            {
+                for (MealPlanDayRecipe mealPlanDayRecipe : mealPlanDay.getMealPlanDayRecipes())
+                {
+                    mealPlanDayRecipe.setRecipe(recipeDao.getRecipeById(mealPlanDayRecipe.getRecipeId()));
+                }
+            }
+        }
+        return mealPlanList;
+    }
+    
+    @RequestMapping(value = "/MealPlans/Create", method = RequestMethod.POST)
+    public Boolean userSubmitMealPlan (@RequestBody MealPlan mealPlan)
+    {
+        return mealPlanDao.createPlan(mealPlan);
+    }
 
 
 
