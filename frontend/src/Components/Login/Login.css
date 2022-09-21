@@ -20,7 +20,7 @@ section .color {
 
 }
 section .color:nth-child(1) {
-    top: -350px;
+    top: 350px;
     width: 500px;
     height: 500px;
     background: #ff359b;

@@ -7,6 +7,7 @@ import MealPlanner from '../Home/HomeComponents/MealPlanner'
 import {addToken, deleteUser} from '../../Redux/actionCreators'
 import {connect} from 'react-redux'
 
+
 const mapStateToProps = state => {
     return {
         token: state.token,
