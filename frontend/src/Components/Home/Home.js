@@ -1,10 +1,10 @@
 import {Link, Redirect, Route} from 'react-router-dom'
 import React from 'react';
-import MealPlanner from './HomeComponents/MealPlanner'
+import Mealplans from '../Mealplans/Mealplans';
 // import jwt_decode from 'jwt-decode'
 import AddRecipe from '../Home/images/AddRecipe.png'
 import RecipeBook from '../Home/images/RecipeBook.png'
-import ShoppingList from '../Home/images/ShoppingList.png'
+// import ShoppingList from '../Home/images/ShoppingList.png'
 import WeeklyPlanner from '../Home/images/WeeklyPlanner.png'
 import '../Home/Home.css'
 import jwt_decode from "jwt-decode";
@@ -69,13 +69,13 @@ export default function Home(props) {
                                 <div class="link-container">  
 
                                  <div className="home-button-group" >
-                                    <Link to='/addrecipe'>
+                                    <Link to='/create'>
                                     <img className="home-button-image" src={AddRecipe} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Add <br />Recipe</p>
                                  </div>
                                  <div className="home-button-group" >
-                                    <Link to='/recipebook'>
+                                    <Link to='/'>
                                     <img className="home-button-image" src={RecipeBook} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Recipe <br />Book</p>
