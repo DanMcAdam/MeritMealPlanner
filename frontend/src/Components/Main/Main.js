@@ -12,6 +12,7 @@ import Search from '../Search/Search'
 import RecipeDetails from '../RecipeDetails/RecipeDetails'
 import './Main.css'
 import Mealplans from '../Mealplans/Mealplans'
+import jwt_decode from "jwt-decode";
 
 
 const mapStateToProps = state => {
@@ -36,6 +37,8 @@ class Main extends Component {
         this.props.deleteUser()
     }
 
+    
+
     render() {
 
         const RecipeWithId = ({ match }) => {
@@ -47,6 +50,9 @@ class Main extends Component {
 
 
             <div>
+
+                
+
                 <header>
 
 
@@ -63,12 +69,22 @@ class Main extends Component {
 
                     {/* <div className='header-links'> */}
 
+                    
+
                     {this.props.token.token !== undefined ?
+                    
+                    
                         <div className='header-links'>
-                            <Link to='/home'>Home | </Link>
-                            <Link to='/recipes'>Recipes |</Link>
-                            <Link to='/login' onClick={this.handleLogout}>logout</Link>
+
+                            <ul>
+                            <li>Welcome {jwt_decode(this.props.token.token).sub}</li>
+                            <li><Link to='/home'>Home</Link></li>
+                            <li><Link to='/recipes'>Recipes</Link></li>
+                            <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
+                            
+                            
                             <Redirect to='/home' />
+                            </ul>
 
                         </div>
                         :
@@ -80,6 +96,7 @@ class Main extends Component {
                                 {/* recipes on main for non logged in users? */}
                                 <li><Link to='/recipes'> Recipes </Link></li>
                                 <li><Link to='/mealplans'>Meal Plans</Link></li>
+                                <Redirect to='/login' />
 
                             </ul>
                         </div>
@@ -88,18 +105,24 @@ class Main extends Component {
                     {/* </div> */}
                 </header>
 
+                <section>
+                <div class="color"></div>
+                <div class="color"></div>
+                <div class="color"></div>
+
+            
 
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
                     <Route path='/register' component={() => <Register />} />
                     {/* <Route path='/recipes/:id' component={() => <RecipeDetails />} /> */}
                     {/* <Route path='/recipes/:id' component={RecipeDetails} /> */}
-                    <Route exact path="/recipes/:id" component={RecipeWithId} />
-                    <Route path='/recipes' component={() => <Recipes />} />
+                    <Route exact path="/recipes/:id" component={this.props.token.token !== undefined ? RecipeWithId : null} />
+                    <Route path='/recipes' component={this.props.token.token !== undefined ? () => <Recipes/> : null} />
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home token={this.props.token.token} /> : null} />
-                    <Route path='/create' component={() => <Create />} />
+                    <Route path='/create' component={this.props.token.token !== undefined ? () => <Create /> : null} />
                     <Route path="/search" component={() => <Search />} />
-                    <Route path="/mealplans" component={() => <Mealplans />} />
+                    <Route path="/mealplans" component={() => this.props.token.token !== undefined ? <Mealplans /> : null} />
 
 
                     {/* <Route path="/search"><Search /></Route>
@@ -107,6 +130,8 @@ class Main extends Component {
                     <Route path='/recipes/:id'><RecipeDetails /></Route>
                     <Redirect to='/login' /> */}
                 </Switch>
+
+                </section>
 
             </div>
         )
