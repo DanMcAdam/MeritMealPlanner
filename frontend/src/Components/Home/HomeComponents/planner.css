@@ -166,7 +166,8 @@
     margin-left: auto;
 }
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+ @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
 * {
     margin: 0;
@@ -174,9 +175,7 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-body {
-    overflow: hidden;
-}
+
 section{
     display: flex;
     justify-content: center;
@@ -185,7 +184,7 @@ section{
     background: linear-gradient(to left, #f1f4f9, #dff1ff);
 }
 section .color {
-    position: absolute;
+    position: relative;
     filter: blur(150px);
 
 }

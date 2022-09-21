@@ -2,7 +2,6 @@ import React, {useState, useEffect, useMemo} from "react";
 import MealPlannerService from "./MealPlannerService";
 import './planner.css'
 import { nanoid } from 'nanoid'
-import '../../../static/CSS/planner.css'
 
 export default function Planner({}){
 
@@ -128,12 +127,11 @@ export default function Planner({}){
     )}), [recipesInPlannerList, plannerDBList]);
 
     return(
-        <>
+        <section>
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="box">
-                    <div class="container">
                         <div class="form">
                                 <div>
                                     <div className="planner-overall-container">
@@ -160,8 +158,7 @@ export default function Planner({}){
                                     </div>
                                 </div>
                     </div>
-                </div>
             </div>
-            </>
+        </section>
     )
 };
