@@ -79,12 +79,6 @@ section .color {
     filter: blur(150px);
 
 }
-section .color:nth-child(1) {
-    top: -350px;
-    width: 500px;
-    height: 500px;
-    background: #ff359b;
-}
 section .color:nth-child(2) {
     bottom: -150px;
     left: 100px;
