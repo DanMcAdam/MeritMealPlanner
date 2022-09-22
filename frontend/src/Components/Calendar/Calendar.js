@@ -92,11 +92,11 @@ class Calendar extends Component {
   render() {
     return (
       <div style={styles.wrap}>
-        <div style={styles.left}>
+        {/* <div style={styles.left}>
           <DayPilotNavigator
             selectMode={"week"}
-            showMonths={3}
-            skipMonths={3}
+            showMonths={1}
+            skipMonths={0}
             startDate={"2023-03-07"}
             selectionDay={"2023-03-07"}
             onTimeRangeSelected={ args => {
@@ -105,7 +105,7 @@ class Calendar extends Component {
               });
             }}
           />
-        </div>
+        </div> */}
         <div style={styles.main}>
           <DayPilotCalendar
             {...this.state}
