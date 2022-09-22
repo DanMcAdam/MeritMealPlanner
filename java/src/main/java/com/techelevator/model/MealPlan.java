@@ -11,7 +11,6 @@ public class MealPlan {
 
     private Long planId;
     private Long ownerId;
-    @NotEmpty(message="Please enter a title.")
     private String title;
     private MealPlanDay[] mealPlanDays;
     

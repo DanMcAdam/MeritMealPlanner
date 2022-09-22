@@ -2,6 +2,8 @@ import React, {useState, useEffect, useMemo} from "react";
 import MealPlannerService from "./MealPlannerService";
 import './Mealplans.css'
 import { nanoid } from 'nanoid'
+import Login from "../Login/Login";
+import { string } from "prop-types";
 
 export default function Mealplans({}){
 
@@ -9,17 +11,31 @@ export default function Mealplans({}){
     const PlannerApi = [
         {
             name: "planner", 
-            url: "http://localhost:8081/api/planner"
+            url: "http://localhost:8081/api/mealplans"
         },
         {
             name: "recipe", 
             url: "http://localhost:8081/api/recipes"
           },
     ]
+    /*
+    const mealPlan = {planId : int, 
+                        ownerId : int, 
+                        title : string, 
+                        mealPlanDays : [{mealPlanDays}]}
 
+    const mealPlanDays = {dayId : int, 
+                            planId : int,
+                            dayInSequence : date,
+                            mealPlanDayRecipes : [{mealPlanDayRecipe}] }
+
+    const mealPlanDayRecipes = {mealPlanDayId : int,
+                                recipeId : int,
+                                header : String,
+                                recipe : {recipe}}
+    */
     const [recipesInPlannerList, setrecipesInPlannerList] = useState([]);
     const [recipeBookList, setRecipeBookList] = useState([]);
-    const [plannerDBList, setPlannerDBList] = useState([]);
     const [filteredRecipeBookList, setFilteredRecipeBookList] = useState([]);
     const [wordEntered, setWordEntered] = useState("");
 
@@ -83,16 +99,16 @@ export default function Mealplans({}){
         
     const displayrecipesInPlannerList= useMemo(() => recipesInPlannerList?.map(recipe=>{
 
-        const recipeId = recipe._id;
+        const recipeId = recipe.recipeId;
 
         const handleImageClick = ()=>{
-            window.location.href = "/recipes/" + recipe._id
+            window.location.href = "/recipes/" + recipe.recipeId
         }
 
         return(
             <div className="button-group" key={ nanoid() }>
-                <img onClick = {handleImageClick} className="button-image" src={recipe.image} width="100px"/>
-                <p className="button-text">{recipe.name}</p>
+                <img onClick = {handleImageClick} className="button-image" src={recipe.title} width="100px"/>
+                <p className="button-text">{recipe.title}</p>
                 <img className="planner-button-delete"
                 onClick={()=>{
                     alert({
@@ -105,7 +121,7 @@ export default function Mealplans({}){
                     })
                     .then((willDelete) => {
                         if (willDelete) {
-                            const plannerId = plannerDBList.find(p => p.recipeId === recipe._id)._id;
+                            const plannerId = plannerDBList.find(p => p.recipeId === recipe.recipeId)._id;
                             MealPlannerService.delete(plannerId).then(() => {
                                 var array = [...recipesInPlannerList]; 
                                 var index = array.indexOf(recipe)

@@ -205,8 +205,7 @@ public class JdbcRecipeDao implements RecipeDao
 
 */
     //updates value on recipe table
-    public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
-                                boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader){
+    public boolean updateRecipe(Recipe recipe){
 
         //gets current date
         long millis=System.currentTimeMillis();
@@ -216,8 +215,8 @@ public class JdbcRecipeDao implements RecipeDao
         String updateRecipeSql = "UPDATE recipe SET title = ?, date_added = ?, cooking_time = ?, prep_time = ?, instructions =?, private = ?, " +
                 "picture_links = ?, reference_link = ?, subheader = ? WHERE recipe_id = ? AND creator_id = ?";
         try{
-            jdbcTemplate.update(updateRecipeSql, title, date, cookingTime, prepTime,
-                    instructions, isPrivate, pictureLinks, referenceLink, subHeader , recipeId, creatorId);
+            jdbcTemplate.update(updateRecipeSql, recipe.getTitle(), date, recipe.getCookingTime(), recipe.getPrepTime(),
+                    recipe.getInstructions(), recipe.isPrivate(), recipe.getPictureLinks(), recipe.getReferenceLink(), recipe.getSubHeader(), recipe.getRecipeId(), recipe.getCreatorId());
         }catch(DataAccessException e){
             return false;
         }

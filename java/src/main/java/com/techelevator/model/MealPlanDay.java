@@ -9,6 +9,7 @@ public class MealPlanDay
     private long planId;
     @NotEmpty (message="please enter which day in the mealplan this day is supposed to represent")
     private Date dayInSequence;
+    private MealPlanDayRecipe[] mealPlanDayRecipes;
     
     public MealPlanDay()
     {
@@ -19,8 +20,6 @@ public class MealPlanDay
         this.dayInSequence = dayInSequence;
         this.mealPlanDayRecipes = mealPlanDayRecipes;
     }
-    
-    private MealPlanDayRecipe[] mealPlanDayRecipes;
     
     public long getDayId()
     {
