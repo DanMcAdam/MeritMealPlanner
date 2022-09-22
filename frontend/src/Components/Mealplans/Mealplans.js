@@ -34,10 +34,12 @@ export default function Mealplans({}){
                                 header : String,
                                 recipe : {recipe}}
     */
+    const [plannerDBList, setPlannerDBList] = useState([]);
     const [recipesInPlannerList, setrecipesInPlannerList] = useState([]);
     const [recipeBookList, setRecipeBookList] = useState([]);
     const [filteredRecipeBookList, setFilteredRecipeBookList] = useState([]);
     const [wordEntered, setWordEntered] = useState("");
+
 
     useEffect(() => {
         loadAllRecipes(PlannerApi[1].url);
