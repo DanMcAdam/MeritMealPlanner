@@ -1,4 +1,6 @@
+import axios from "axios"
 import { useState, useEffect } from "react"
+import { useSelector, useStore } from "react-redux"
 
 export const useFetch = (url, method = "GET") => {
     const [data, setData] = useState(null)
@@ -6,10 +8,14 @@ export const useFetch = (url, method = "GET") => {
     const [error, setError] = useState(null)
     const [options, setOptions] = useState(null)
 
+    const userId = useSelector((state) => state.user.id)
+    const token = useSelector((state) => state.token.token)
+
     const postData = (postData) => {
         setOptions({
             method: "POST",
             headers: {
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(postData)
@@ -59,3 +65,4 @@ export const useFetch = (url, method = "GET") => {
 
     return { data, isPending, error, postData }
 }
+

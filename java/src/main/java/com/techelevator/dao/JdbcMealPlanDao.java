@@ -25,7 +25,7 @@ public class JdbcMealPlanDao implements MealPlanDao
     
     
     @Override
-    public List<MealPlan> findAllMealPlan(Long ownerId)
+    public List<MealPlan> findAllMealPlan(int ownerId)
     {
         String sql = "SELECT * FROM meal_plan WHERE owner_id = ?;";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, ownerId);
@@ -87,7 +87,7 @@ public class JdbcMealPlanDao implements MealPlanDao
     {
         List<MealPlanDay> mealPlanDayList = new ArrayList<>();
         
-        String sql = "SELECT * FROM meal_plan_day WHERE meal_plan_day = ?;";
+        String sql = "SELECT * FROM meal_plan_day WHERE day_id = ?;";
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(sql, planId);
         try
         {
@@ -104,7 +104,7 @@ public class JdbcMealPlanDao implements MealPlanDao
     }
     
     @Override
-    public MealPlan mapRowToMealPlan(SqlRowSet rs) throws Exception
+    public MealPlan mapRowToMealPlan(SqlRowSet rs)
     {
         MealPlan mealPlan = new MealPlan();
         try
@@ -117,8 +117,9 @@ public class JdbcMealPlanDao implements MealPlanDao
             return mealPlan;
         } catch (Exception e)
         {
-            throw new Exception("Error mapping mealplan");
+            System.err.println(e.getMessage());
         }
+        return mealPlan;
     }
     
     MealPlanDay mapRowToMealPlanDay(SqlRowSet rs) throws Exception
@@ -248,9 +249,9 @@ public class JdbcMealPlanDao implements MealPlanDao
     {
         List<Long> dayIds = new ArrayList<>();
         String findMealPlanDays = "SELECT day_id FROM meal_plan_day WHERE plan_id = ?;";
-        String deleteMealPlan = "DELETE * FROM meal_plan WHERE plan_id = ? AND owner_id = ?;";
-        String deleteMealPlanDays = "DELETE * FROM meal_plan_day WHERE plan_id = ?;";
-        String deleteMealPlanDayRecipe = "DELETE * FROM day_recipe WHERE meal_plan_day_day_id = ?;";
+        String deleteMealPlan = "DELETE FROM meal_plan WHERE plan_id = ? AND owner_id = ?;";
+        String deleteMealPlanDays = "DELETE FROM meal_plan_day WHERE plan_id = ?;";
+        String deleteMealPlanDayRecipe = "DELETE FROM day_recipe WHERE meal_plan_day_day_id = ?;";
         String checkOwnership = "SELECT * FROM meal_plan WHERE plan_id = ? AND owner_id = ?;";
         try
         {

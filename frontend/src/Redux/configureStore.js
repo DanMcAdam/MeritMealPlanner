@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { Token } from './token'
 import { User } from './user'
-
+import { connect } from "react-redux"
 
 
 export const ConfigureStore = () => {

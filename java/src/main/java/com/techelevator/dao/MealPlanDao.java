@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface MealPlanDao {
     
-    List<MealPlan> findAllMealPlan(Long ownerId);
+    List<MealPlan> findAllMealPlan(int ownerId);
     
     int getPlanIdByOwnerId(Long ownerId);
 
