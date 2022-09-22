@@ -32,8 +32,7 @@ public interface RecipeDao
                                    // boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader);
 
 
-        public boolean updateRecipe(Long recipeId, Long creatorId, String title, Long cookingTime, Long prepTime,String instructions,
-                                    boolean isPrivate, String[] pictureLinks, String referenceLink, String subHeader);
+        public boolean updateRecipe(Recipe recipe);
         
         boolean checkRecipeOwnership(Long recipeId, int creatorId);
         

@@ -82,7 +82,6 @@ public class MealPlanController {
     public List<Recipe> getListOfRecipes(Principal principal) throws Exception{
         int userId = userDao.findIdByUsername(principal.getName());
         return recipeDao.getRecipeListFromUser(userId);
-
     }
     
     
@@ -105,8 +104,6 @@ public class MealPlanController {
     //TODO: Cleanup commented out code and test stuff
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
     public boolean userSubmitRecipe(@RequestBody Recipe recipe, Principal principal){
-        System.out.println(recipe.toString());
-        System.out.println(principal.getName());
         int creatorId = userDao.findIdByUsername(principal.getName());
         recipe.setCreatorId(creatorId);
         boolean worked = true;
@@ -115,6 +112,20 @@ public class MealPlanController {
         return worked;
 
         
+    }
+    
+    @RequestMapping(value = "/recipes/{id}", method = RequestMethod.PUT)
+    public boolean userUpdateRecipe(@PathVariable Long id, @RequestBody Recipe recipe, Principal principal)
+    {
+        int creatorId = userDao.findIdByUsername(principal.getName());
+        Boolean worked = false;
+        if(recipeDao.checkRecipeOwnership(id, creatorId))
+        {
+            worked = ingredientDao.deleteAllIngredientsFromRecipe(id) ? true : false;
+            worked = ingredientDao.postAllIngredientsForRecipe(recipe) ? worked : false;
+            worked = recipeDao.updateRecipe(recipe) ? worked : false;
+        }
+        return worked;
     }
 
     @RequestMapping(value = "/MealPlans", method = RequestMethod.GET)
@@ -133,12 +144,6 @@ public class MealPlanController {
             }
         }
         return mealPlanList;
-    }
-    
-    @RequestMapping(value = "/MealPlans/Create", method = RequestMethod.POST)
-    public Boolean userSubmitMealPlan (@RequestBody MealPlan mealPlan)
-    {
-        return mealPlanDao.createPlan(mealPlan);
     }
 
     @RequestMapping(value = "/MealPlans/{id}", method = RequestMethod.DELETE)
