@@ -13,6 +13,7 @@ import RecipeDetails from '../RecipeDetails/RecipeDetails'
 import './Main.css'
 import Mealplans from '../Mealplans/Mealplans'
 import jwt_decode from "jwt-decode";
+import Calendar from '../Calendar/Calendar'
 
 
 const mapStateToProps = state => {
@@ -120,7 +121,7 @@ class Main extends Component {
                     <Route path='/create' component={this.props.token.token !== undefined ? () => <Create /> : null} />
                     <Route path="/search" component={() => <Search />} />
                     <Route path="/mealplanner" component={() => this.props.token.token !== undefined ? <Mealplans /> : null} />
-
+                    <Route path="/calendar" component={() => this.props.token.token !== undefined ? <Calendar/> : null} />
 
                     {/* <Route path="/search"><Search /></Route>
                     <Route path="/create"><Create /></Route>

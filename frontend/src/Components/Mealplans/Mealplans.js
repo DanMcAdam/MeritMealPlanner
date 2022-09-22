@@ -9,7 +9,7 @@ export default function Mealplans({}){
     const PlannerApi = [
         {
             name: "planner", 
-            url: "http://localhost:8081/api/planner"
+            url: "http://localhost:8081/api/mealplans"
         },
         {
             name: "recipe", 
@@ -91,8 +91,8 @@ export default function Mealplans({}){
 
         return(
             <div className="button-group" key={ nanoid() }>
-                <img onClick = {handleImageClick} className="button-image" src={recipe.image} width="100px"/>
-                <p className="button-text">{recipe.name}</p>
+                {/* <img className="button-image" src={recipe.image} width="100px"/> */}
+                <p onClick = {handleImageClick} className="button-text">{recipe.name}</p>
                 <img className="planner-button-delete"
                 onClick={()=>{
                     alert({
