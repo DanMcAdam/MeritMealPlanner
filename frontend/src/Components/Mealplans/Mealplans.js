@@ -9,11 +9,11 @@ export default function Mealplans({}){
     const PlannerApi = [
         {
             name: "planner", 
-            url: "http://localhost:8081/api/mealplans"
+            url: "http://localhost:8081/mealplans"
         },
         {
             name: "recipe", 
-            url: "http://localhost:8081/api/recipes"
+            url: "http://localhost:8081/recipes"
           },
     ]
 

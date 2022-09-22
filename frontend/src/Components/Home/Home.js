@@ -37,7 +37,7 @@ export default function Home(props) {
                                     <p className="home-button-title" >Recipe <br />Book</p>
                                 </div>
                                 <div className="home-button-group" >
-                                    <Link to='/mealplanner'>
+                                    <Link to='/mealplans'>
                                         <img className="home-button-image" src={WeeklyPlanner} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Weekly <br />Planner</p>
