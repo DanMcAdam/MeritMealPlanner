@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useFetch } from "../../hooks/useFetch"
 import { Link } from "react-router-dom"
+import { connect } from "react-redux"
 import './RecipeForm.css'
 
 
@@ -31,7 +32,7 @@ export default function RecipeForm() {
     const [subHeader, setSubHeader] = useState('null')
 
     const { postData, data, error } = useFetch("http://localhost:8081/FormCreate", "POST")
-
+    
     const resetForm = () => {
         setTitle('')
         setInstructions('')
@@ -267,4 +268,5 @@ export default function RecipeForm() {
         </div>
     )
 }
+
 

@@ -23,7 +23,7 @@ public class JdbcIngredientDao implements IngredientDao
     @Override
     public boolean deleteAllIngredientsFromRecipe(Long recipeId)
     {
-        String sql = "DELETE * FROM recipe_ingredient WHERE recipe_recipe_id = ?;";
+        String sql = "DELETE FROM recipe_ingredient WHERE recipe_recipe_id = ?;";
         try
         {
             jdbcTemplate.update(sql, recipeId);

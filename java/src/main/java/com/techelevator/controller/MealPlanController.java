@@ -104,11 +104,11 @@ public class MealPlanController {
     //TODO: get principle working to populate recipe creator id
     //TODO: Cleanup commented out code and test stuff
     @RequestMapping(value = "/FormCreate", method = RequestMethod.POST)
-    public boolean userSubmitRecipe(@RequestBody Recipe recipe){
-        //System.out.println(recipe.toString());
-        //System.out.println(principal.getName());
-        //int creatorId = userDao.findIdByUsername(principal.getName());
-        //recipe.setCreatorId(creatorId);
+    public boolean userSubmitRecipe(@RequestBody Recipe recipe, Principal principal){
+        System.out.println(recipe.toString());
+        System.out.println(principal.getName());
+        int creatorId = userDao.findIdByUsername(principal.getName());
+        recipe.setCreatorId(creatorId);
         boolean worked = true;
         recipe = recipeDao.createRecipe(recipe);
         worked = ingredientDao.postAllIngredientsForRecipe(recipe)? worked : false;
@@ -118,8 +118,9 @@ public class MealPlanController {
     }
 
     @RequestMapping(value = "/MealPlans", method = RequestMethod.GET)
-    public List<MealPlan> displayAllUserMealPlans(Long userId)
+    public List<MealPlan> displayAllUserMealPlans(Principal principal)
     {
+        int userId = userDao.findIdByUsername(principal.getName());
         List<MealPlan> mealPlanList = mealPlanDao.findAllMealPlan(userId);
         for (MealPlan mealPlan : mealPlanList)
         {
