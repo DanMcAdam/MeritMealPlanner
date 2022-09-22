@@ -1,4 +1,4 @@
-const baseURL = "http://localhost:5000/api/planner/"
+const baseURL = "http://localhost:8081/api/mealplans/"
 
 const MealPlannerService = {
     getById(recipeId) {
