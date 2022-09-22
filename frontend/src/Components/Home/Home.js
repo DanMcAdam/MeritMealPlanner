@@ -1,13 +1,13 @@
 import {Link, Redirect, Route} from 'react-router-dom'
 import React from 'react';
-import MealPlanner from './HomeComponents/MealPlanner'
-// import jwt_decode from 'jwt-decode'
+import Mealplans from '../Mealplans/Mealplans';
 import AddRecipe from '../Home/images/AddRecipe.png'
 import RecipeBook from '../Home/images/RecipeBook.png'
-import ShoppingList from '../Home/images/ShoppingList.png'
+// import ShoppingList from '../Home/images/ShoppingList.png'
 import WeeklyPlanner from '../Home/images/WeeklyPlanner.png'
 import '../Home/Home.css'
 import jwt_decode from "jwt-decode";
+import Rectangle from './images/Rectangle.png'
 
 export default function Home(props) {
 
@@ -28,54 +28,43 @@ export default function Home(props) {
 
     return(
         <body>
-            <header>Merit The Homepage</header>
-            <section>
+            <section class="home-section">
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
-                <div>
-
-            {decoded.auth === 'ROLE_USER'?  
-            <div>
-            Welcome {decoded.sub}
-            You are a {decoded.auth}
-            Your token is {token}
-             You are a not a admin
-             </div>
-            
-            : 
-            
-            <div>
                 
-                Welcome {decoded.sub}
-                You are a {decoded.auth}
-                You are a administrator
-            </div>
-        
-            
-            
-            
-            }
-           
-           
-
-            
-            
-            
-        </div>
                 <div class="box">
-                        <div class="form">
-                            <form>
-                                <div class="link-container">  
+                    <div class="form">
+                       <form>
+                           <div class="link-container">  
+                                    {/* <div class="token">
+                                    {decoded.auth === 'ROLE_USER'?  
+                                    <div class="token-li">
+                                        <ul>
+                                            <li>You are a {decoded.auth}</li>
+                                            <li>Your token is {token}</li>
+                                            <li>You are a not a admin</li>
+                                        </ul>
+                                    </div>
+                                    :
+                                    <div>
+                                        
+                                        Welcome {decoded.sub}
+                                        You are a {decoded.auth}
+                                        You are a administrator
+                                    </div>
 
+                                    }
+
+                                </div> */}
                                  <div className="home-button-group" >
-                                    <Link to='/addrecipe'>
+                                    <Link to='/create'>
                                     <img className="home-button-image" src={AddRecipe} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Add <br />Recipe</p>
                                  </div>
                                  <div className="home-button-group" >
-                                    <Link to='/recipebook'>
+                                    <Link to='/recipes'>
                                     <img className="home-button-image" src={RecipeBook} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Recipe <br />Book</p>

@@ -20,7 +20,7 @@ export default function Recipes() {
 
     // TODO Ability to search recipes by title,
     // Create a temp recipe Collection when there is a query value
-    /*
+    
      const queryUrl = `http://localhost:3000/recipes?title_like=${query}`
      async function searchRecipes() {
          const response = await fetch(queryUrl)
@@ -31,11 +31,14 @@ export default function Recipes() {
          e.preventDefault();
          searchRecipes()
      }
-     */
+    
 
     return (
 
         <>
+        <div class="box">
+                    <div class="form">
+                       <form>
             <div className="recipes-container">
                 <div className="recipes-top-container">
                     <h1>My Recipes</h1>
@@ -69,6 +72,9 @@ export default function Recipes() {
                     </div>
                 </div>
             </div>
+        </form>
+        </div>
+        </div>
         </>
     )
 }

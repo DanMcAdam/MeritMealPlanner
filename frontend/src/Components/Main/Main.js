@@ -52,9 +52,9 @@ class Main extends Component {
             <div>
 
                 
-
-                <header>
-
+    <div className='box'>
+                <header class="header-container">
+                    
 
                     <img
                         src=".././LogoIcon-Small.png"
@@ -77,13 +77,11 @@ class Main extends Component {
                         <div className='header-links'>
 
                             <ul>
-                            <li>Welcome {jwt_decode(this.props.token.token).sub}</li>
-                            <li><Link to='/home'>Home</Link></li>
-                            <li><Link to='/recipes'>Recipes</Link></li>
-                            <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
-                            
-                            
-                            <Redirect to='/home' />
+                                <li>Welcome {jwt_decode(this.props.token.token).sub}</li>
+                                <li><Link to='/home'>Home</Link></li>
+                                {/* <li><Link to='/recipes'>Recipes</Link></li> */}
+                                <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
+                                <Redirect to='/home' />
                             </ul>
 
                         </div>
@@ -102,15 +100,14 @@ class Main extends Component {
                         </div>
                     }
 
-                    {/* </div> */}
+                    
                 </header>
-
+</div>
                 <section>
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
-
-            
+                
 
                 <Switch>
                     <Route path='/login' component={() => <Login />} />
@@ -122,7 +119,7 @@ class Main extends Component {
                     <Route path='/home' component={this.props.token.token !== undefined ? () => <Home token={this.props.token.token} /> : null} />
                     <Route path='/create' component={this.props.token.token !== undefined ? () => <Create /> : null} />
                     <Route path="/search" component={() => <Search />} />
-                    <Route path="/mealplans" component={() => this.props.token.token !== undefined ? <Mealplans /> : null} />
+                    <Route path="/mealplanner" component={() => this.props.token.token !== undefined ? <Mealplans /> : null} />
 
 
                     {/* <Route path="/search"><Search /></Route>
@@ -131,7 +128,7 @@ class Main extends Component {
                     <Redirect to='/login' /> */}
                 </Switch>
 
-                </section>
+            </section>
 
             </div>
         )

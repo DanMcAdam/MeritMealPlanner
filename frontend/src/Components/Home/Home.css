@@ -4,7 +4,6 @@
 }
 
 
-
 .homepage-banner {
     width: 95%;
     height: 15vw;
@@ -40,14 +39,6 @@
     top: -11vw;
 }
 
-.link-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2.5rem;
-}
 
 .home-banner-image {
     width: 50%;
@@ -62,7 +53,7 @@
     border-radius: 10px;
     padding: 20px;
     width: 200px;
-    height: 270px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     transition: 0.5s ease;
@@ -77,7 +68,7 @@
     transition: 1s ease;
     padding: 20px;
     width: 200px;
-    height: 270px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -89,7 +80,7 @@
 .home-button-group .home-button-title {
     color: black;
     font-weight: 500;
-    font-size: xx-large;
+    font-size: x-large;
     display: flex;
     margin-top: 0;
     margin-bottom: 1rem;
@@ -134,4 +125,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+/*Drew's CSS */
+
+
+.link-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.5rem;
+}
+
+.home-section {
+    background-image: url("./images/Rectangle.png");
+    background-size: 100%;
+
 }
