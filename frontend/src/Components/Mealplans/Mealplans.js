@@ -9,11 +9,11 @@ export default function Mealplans({}){
     const PlannerApi = [
         {
             name: "planner", 
-            url: "http://localhost:5000/api/planner"
+            url: "http://localhost:8081/api/planner"
         },
         {
             name: "recipe", 
-            url: "http://localhost:5000/api/recipes"
+            url: "http://localhost:8081/api/recipes"
           },
     ]
 
@@ -86,7 +86,7 @@ export default function Mealplans({}){
         const recipeId = recipe._id;
 
         const handleImageClick = ()=>{
-            window.location.href = "/recipebook/" + recipe._id
+            window.location.href = "/recipes/" + recipe._id
         }
 
         return(
@@ -131,8 +131,9 @@ export default function Mealplans({}){
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
-                <div class="box">
-                        <div class="form">
+                <div class="mealplan-box">
+                        <div class="mealplan-container">
+                        <div class="mealplan-form">
                                 <div>
                                     <div className="planner-overall-container">
                                         <div className="search">
@@ -156,6 +157,7 @@ export default function Mealplans({}){
                                         </div>
 
                                     </div>
+                                </div>
                                 </div>
                     </div>
             </div>

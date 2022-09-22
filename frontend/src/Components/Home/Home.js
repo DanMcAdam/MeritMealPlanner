@@ -7,6 +7,7 @@ import RecipeBook from '../Home/images/RecipeBook.png'
 import WeeklyPlanner from '../Home/images/WeeklyPlanner.png'
 import '../Home/Home.css'
 import jwt_decode from "jwt-decode";
+import Rectangle from './images/Rectangle.png'
 
 export default function Home(props) {
 
@@ -27,7 +28,7 @@ export default function Home(props) {
 
     return(
         <body>
-            <section>
+            <section class="home-section">
                 <div class="color"></div>
                 <div class="color"></div>
                 <div class="color"></div>
@@ -36,13 +37,12 @@ export default function Home(props) {
                     <div class="form">
                        <form>
                            <div class="link-container">  
-                                <div class="token">
+                                    {/* <div class="token">
                                     {decoded.auth === 'ROLE_USER'?  
                                     <div class="token-li">
                                         <ul>
                                             <li>You are a {decoded.auth}</li>
-                                            <li>Your token is</li>
-                                            <li>{token}</li>
+                                            <li>Your token is {token}</li>
                                             <li>You are a not a admin</li>
                                         </ul>
                                     </div>
@@ -56,7 +56,7 @@ export default function Home(props) {
 
                                     }
 
-                                </div>
+                                </div> */}
                                  <div className="home-button-group" >
                                     <Link to='/create'>
                                     <img className="home-button-image" src={AddRecipe} alt="add-recipe" />
@@ -64,7 +64,7 @@ export default function Home(props) {
                                     <p className="home-button-title" >Add <br />Recipe</p>
                                  </div>
                                  <div className="home-button-group" >
-                                    <Link to='/'>
+                                    <Link to='/recipes'>
                                     <img className="home-button-image" src={RecipeBook} alt="add-recipe" />
                                     </Link>
                                     <p className="home-button-title" >Recipe <br />Book</p>

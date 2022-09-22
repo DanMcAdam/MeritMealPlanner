@@ -77,13 +77,11 @@ class Main extends Component {
                         <div className='header-links'>
 
                             <ul>
-                            <li><p>Welcome {jwt_decode(this.props.token.token).sub}</p></li>
-                            <li><Link to='/home'>Home</Link></li>
-                            {/* <li><Link to='/recipes'>Recipes</Link></li> */}
-                            <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
-                            
-                            
-                            <Redirect to='/home' />
+                                <li>Welcome {jwt_decode(this.props.token.token).sub}</li>
+                                <li><Link to='/home'>Home</Link></li>
+                                {/* <li><Link to='/recipes'>Recipes</Link></li> */}
+                                <li><Link to='/login' onClick={this.handleLogout}>Logout</Link></li>
+                                <Redirect to='/home' />
                             </ul>
 
                         </div>
